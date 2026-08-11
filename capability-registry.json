@@ -1,0 +1,574 @@
+{
+  "_comment": "公共能力包注册表 v1.0 — 机器可读，供匹配引擎/市场页/大屏消费。每个能力包 = L1 数据资产 + L2 技能包 + L3 服务 API 三层。",
+  "schema": "capability-registry/v1",
+  "updatedAt": "2026-08-10T22:20:00+08:00",
+  "packs": [
+    {
+      "id": "mingli-knowledge-pack",
+      "name": "命理知识能力包",
+      "domain": "mingli",
+      "version": "1.0.0",
+      "source": [
+        "mingli-baojian",
+        "wechat-platform"
+      ],
+      "maturity": 5,
+      "keywords": [
+        "八字",
+        "紫微",
+        "奇门",
+        "六爻",
+        "六壬",
+        "梅花",
+        "风水",
+        "合婚",
+        "起名",
+        "五行",
+        "易经",
+        "命理",
+        "排盘",
+        "化解",
+        "流年",
+        "大运"
+      ],
+      "layers": {
+        "L1_data": {
+          "kbEntries": 25997,
+          "formats": [
+            "jsonl",
+            "db-snapshot"
+          ],
+          "billing": "per-token-data"
+        },
+        "L2_skill": {
+          "skills": [
+            "bazi-mingli",
+            "shuhan-qimen"
+          ],
+          "billing": "per-token-quota"
+        },
+        "L3_api": {
+          "endpoints": [
+            "/api/mingli/paipan/calculate",
+            "/api/mingli/paipan/ziwei",
+            "/api/mingli/paipan/qimen",
+            "/api/mingli/kb/search",
+            "/api/mingli/kb/module/:mod"
+          ],
+          "billing": "per-token"
+        }
+      },
+      "boundary": {
+        "capable": [
+          "排盘计算（7 术数）",
+          "命理解读报告生成",
+          "化解方案（基于盘面数据）",
+          "吉日推荐/科仪分流",
+          "KB 检索与问答"
+        ],
+        "incapable": [
+          "不替代专业命理师面对面服务",
+          "不提供医疗/投资/法律决策",
+          "不做未授权个人数据画像"
+        ],
+        "compliance": [
+          "命理内容需带免责声明",
+          "用户数据脱敏存储"
+        ]
+      }
+    },
+    {
+      "id": "tcm-knowledge-pack",
+      "name": "中医医学能力包",
+      "domain": "tcm",
+      "version": "1.1.0",
+      "source": [
+        "tcm-agent",
+        "nihaisha-nishi-tcm",
+        "tcm-diagnosis"
+      ],
+      "maturity": 4,
+      "keywords": [
+        "中医",
+        "伤寒",
+        "金匮",
+        "方剂",
+        "针灸",
+        "穴位",
+        "辨证",
+        "四诊",
+        "舌诊",
+        "脉诊",
+        "经方",
+        "中药",
+        "倪海厦",
+        "问诊",
+        "体质"
+      ],
+      "layers": {
+        "L1_data": {
+          "kbEntries": 13128,
+          "formats": [
+            "jsonl",
+            "db-snapshot"
+          ],
+          "billing": "per-token-data"
+        },
+        "L2_skill": {
+          "skills": [
+            "nihaisha"
+          ],
+          "billing": "per-token-quota"
+        },
+        "L3_api": {
+          "endpoints": [
+            "/api/tcm/kb",
+            "/api/tcm/diagnose",
+            "/api/tcm/inquiry",
+            "/api/tcm/formula/search",
+            "/api/tcm/acupoint/search",
+            "/api/tcm/cases/similar"
+          ],
+          "billing": "per-token"
+        }
+      },
+      "boundary": {
+        "capable": [
+          "中医知识检索",
+          "智能辨证（八纲/六经）",
+          "方剂/穴位/经方推荐",
+          "相似案例检索",
+          "问诊单结构化"
+        ],
+        "incapable": [
+          "不替代执业医师诊断",
+          "不提供处方用药指导",
+          "不输出治疗方案",
+          "急重症不适用"
+        ],
+        "compliance": [
+          "必须挂载医疗免责声明",
+          "医疗输出需人工审核标记",
+          "涉及诊疗输出必须后台医生审核（对齐互联网医院模式）"
+        ]
+      },
+      "updatedAt": "2026-08-10 21:12"
+    },
+    {
+      "id": "vision-diagnosis-pack",
+      "name": "AI 视觉诊疗能力包",
+      "domain": "vision",
+      "version": "1.0.0",
+      "source": [
+        "ai-vision-toolkit",
+        "video-ai-surveillance",
+        "lowaltitude-platform"
+      ],
+      "maturity": 3,
+      "keywords": [
+        "面诊",
+        "舌诊",
+        "眼诊",
+        "手诊",
+        "摄像头",
+        "ONNX",
+        "视觉识别",
+        "特征提取",
+        "图像分析",
+        "拍照诊断"
+      ],
+      "layers": {
+        "L1_data": {
+          "kbEntries": 0,
+          "models": 74,
+          "formats": [
+            "onnx"
+          ],
+          "billing": "per-token-data"
+        },
+        "L2_skill": {
+          "skills": [
+            "autoglm-image-recognition"
+          ],
+          "billing": "per-token-quota"
+        },
+        "L3_api": {
+          "endpoints": [
+            "/api/vision/face",
+            "/api/vision/tongue",
+            "/api/vision/eye",
+            "/api/vision/palm",
+            "/api/camera/upload"
+          ],
+          "billing": "per-token"
+        }
+      },
+      "boundary": {
+        "capable": [
+          "面/舌/眼/手 四诊特征识别",
+          "特征→KB 辨证匹配（30ms）",
+          "拍照可追溯（照片归档）",
+          "离线兜底（PIL 几何启发式）"
+        ],
+        "incapable": [
+          "不构成医学诊断",
+          "光线极差/遮挡严重时准确率下降",
+          "不保存人脸生物特征明文"
+        ],
+        "compliance": [
+          "视觉输出必须 KB 匹配 + 免责声明",
+          "人脸数据匿名化处理",
+          "医疗用途需合规审查"
+        ]
+      }
+    },
+    {
+      "id": "hci-super-species-pack",
+      "name": "人机交互超级物种能力包",
+      "domain": "hci",
+      "version": "1.0.0",
+      "source": [
+        "smart-home-family",
+        "全项目经验"
+      ],
+      "maturity": 4,
+      "keywords": [
+        "交互",
+        "界面",
+        "体验",
+        "零学习成本",
+        "傻瓜式",
+        "无障碍",
+        "个性化",
+        "情感化",
+        "主题",
+        "家庭成员",
+        "HCI",
+        "UI",
+        "UX"
+      ],
+      "layers": {
+        "L1_data": {
+          "kbEntries": 0,
+          "formats": [
+            "design-tokens",
+            "规范文档"
+          ],
+          "billing": "per-token-quota"
+        },
+        "L2_skill": {
+          "skills": [
+            "autoclaw-design-capability",
+            "ui-ux-pro-max",
+            "frontend-page-design"
+          ],
+          "billing": "per-token-quota"
+        },
+        "L3_api": {
+          "endpoints": [
+            "/api/preferences",
+            "/api/theme",
+            "/api/avatar",
+            "/api/content-feed"
+          ],
+          "billing": "per-token"
+        }
+      },
+      "boundary": {
+        "capable": [
+          "零学习成本交互规范输出",
+          "家庭成员个性化配置（色调/形象/关注内容）",
+          "信息虚拟化/趋势预判/生活撮合/温和教练 4 模块",
+          "无障碍合规巡检"
+        ],
+        "incapable": [
+          "不替代产品决策",
+          "不承诺跨平台原生实现",
+          "情感识别为启发式非诊断"
+        ],
+        "compliance": [
+          "未成年人数据保护",
+          "隐私脱敏（full_mask/partial_mask/fuzzy/blur 四级）"
+        ]
+      }
+    },
+    {
+      "id": "training-pipeline-pack",
+      "name": "智能体训练体系能力包",
+      "domain": "training",
+      "version": "1.0.0",
+      "source": [
+        "全项目训练体系"
+      ],
+      "maturity": 4,
+      "keywords": [
+        "训练",
+        "SFT",
+        "DPO",
+        "微调",
+        "蒸馏",
+        "ChatML",
+        "评估",
+        "反馈",
+        "数据生成",
+        "合规",
+        "语料"
+      ],
+      "layers": {
+        "L1_data": {
+          "kbEntries": 0,
+          "sftCases": 711,
+          "dpoPairs": 40,
+          "formats": [
+            "jsonl",
+            "chatml"
+          ],
+          "billing": "per-token-data"
+        },
+        "L2_skill": {
+          "skills": [
+            "knowledge-distillation",
+            "skill-creator"
+          ],
+          "billing": "per-token-quota"
+        },
+        "L3_api": {
+          "endpoints": [
+            "/api/training/gold-cases",
+            "/api/training/chatml",
+            "/api/training/compliance-scan",
+            "/api/training/feedback-aggregate"
+          ],
+          "billing": "per-token"
+        }
+      },
+      "boundary": {
+        "capable": [
+          "SFT/DPO 数据批量生成",
+          "知识蒸馏（自有/开源/授权）",
+          "ChatML 格式转换（LLaMA-Factory 兼容）",
+          "7 大禁止标签合规扫描",
+          "周评估与反馈聚合"
+        ],
+        "incapable": [
+          "不提供算力/GPU",
+          "不承诺模型效果（需客户自训）",
+          "蒸馏仅限白名单来源"
+        ],
+        "compliance": [
+          "蒸馏红线：开源协议/公开文档/授权内容",
+          "训练数据不含付费墙内容",
+          "数据溯源记录（license + trust 分级 ≥0.7）"
+        ]
+      }
+    },
+    {
+      "id": "agent-orchestration-pack",
+      "name": "智能体编排与自进化能力包",
+      "domain": "agent",
+      "version": "1.0.0",
+      "source": [
+        "smart-home-family",
+        "mingli-baojian"
+      ],
+      "maturity": 4,
+      "keywords": [
+        "智能体",
+        "编排",
+        "调度",
+        "自进化",
+        "agent",
+        "多模块联动",
+        "记忆",
+        "KB优先",
+        "工具调用",
+        "工作流"
+      ],
+      "layers": {
+        "L1_data": {
+          "kbEntries": 0,
+          "formats": [
+            "规则库"
+          ],
+          "billing": "per-token-quota"
+        },
+        "L2_skill": {
+          "skills": [
+            "brainstorming",
+            "deep-research",
+            "hermes-evolution"
+          ],
+          "billing": "per-token-quota"
+        },
+        "L3_api": {
+          "endpoints": [
+            "/api/agent/plan",
+            "/api/agent/execute",
+            "/api/agent/reflect",
+            "/api/agent/memory",
+            "/api/agent/kb-first"
+          ],
+          "billing": "per-token"
+        }
+      },
+      "boundary": {
+        "capable": [
+          "Plan→Do→Check→Act 闭环",
+          "KB 优先三级分级（≥0.7 直答/0.4-0.7 润色/<0.4 AI）",
+          "终身记忆与增量训练",
+          "多模块联动调度"
+        ],
+        "incapable": [
+          "不包含具体业务知识（需搭配领域能力包）",
+          "不自带算力",
+          "长时任务需客户配置超时策略"
+        ],
+        "compliance": [
+          "自进化数据需授权",
+          "记忆内容脱敏",
+          "工具调用权限最小化"
+        ]
+      }
+    },
+    {
+      "id": "requirement-engine-pack",
+      "name": "需求评估引擎能力包",
+      "domain": "engine",
+      "version": "1.0.0",
+      "source": [
+        "_shared/capability-market"
+      ],
+      "maturity": 4,
+      "keywords": [
+        "需求",
+        "评估",
+        "行业",
+        "知识库",
+        "匹配",
+        "报价",
+        "需求分析",
+        "需求卡",
+        "训练方向",
+        "咨询"
+      ],
+      "layers": {
+        "L1_data": {
+          "kbEntries": 0,
+          "formats": [
+            "industry-kb"
+          ],
+          "billing": "per-token-data"
+        },
+        "L2_skill": {
+          "skills": [],
+          "billing": "per-token-quota"
+        },
+        "L3_api": {
+          "endpoints": [
+            "/api/engine/analyze",
+            "/api/billing/quote"
+          ],
+          "billing": "per-token"
+        }
+      },
+      "boundary": {
+        "capable": [
+          "行业识别（12 行业）",
+          "合规触发检测",
+          "规范路径建议",
+          "能力包匹配",
+          "词元报价预估",
+          "需求卡输出"
+        ],
+        "incapable": [
+          "不替代人工商务谈判",
+          "行业知识库为通用模板，深度定制需咨询"
+        ],
+        "requires": [
+          "训练方向描述（≥10 字）"
+        ],
+        "compliance": [
+          "行业合规要求仅提示，最终以客户资质与法务确认为准"
+        ]
+      }
+    },
+    {
+      "id": "neural-capability-pack",
+      "name": "神经网络主流能力图谱",
+      "domain": "neural",
+      "version": "1.0.0",
+      "source": [
+        "_shared/capability-market",
+        "ICLR 2026",
+        "ICML 2026",
+        "ACL 2026"
+      ],
+      "maturity": 4,
+      "keywords": [
+        "RAG",
+        "向量检索",
+        "LoRA",
+        "QLoRA",
+        "SFT",
+        "DPO",
+        "RLHF",
+        "微调",
+        "多模态",
+        "语音",
+        "强化学习",
+        "Agent RL",
+        "Function Calling",
+        "工具调用",
+        "Multi-Agent",
+        "多智能体",
+        "GraphRAG",
+        "持续学习",
+        "Continual Learning",
+        "Embedding",
+        "Transformer"
+      ],
+      "layers": {
+        "L1_data": {
+          "kbEntries": 0,
+          "formats": [
+            "capability-map"
+          ],
+          "billing": "free"
+        },
+        "L2_skill": {
+          "skills": [
+            "training-pipeline-pack"
+          ],
+          "billing": "per-token-quota"
+        },
+        "L3_api": {
+          "endpoints": [
+            "/api/neural/capabilities",
+            "/api/neural/recommend"
+          ],
+          "billing": "free"
+        }
+      },
+      "boundary": {
+        "capable": [
+          "12 维度能力选型建议",
+          "决策框架",
+          "门槛值引用",
+          "行业适配推荐"
+        ],
+        "incapable": [
+          "不提供算力",
+          "不训练模型",
+          "不承诺效果",
+          "框架不绑定"
+        ],
+        "requires": [
+          "训练方自行选型决策"
+        ],
+        "compliance": [
+          "选型建议仅供参考，最终以训练方验证为准"
+        ]
+      }
+    }
+  ]
+}

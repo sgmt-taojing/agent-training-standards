@@ -1,0 +1,58 @@
+{
+  "schema": "knowledge-card/v1",
+  "generatedAt": "2026-08-10T14:20:44.983Z",
+  "identity": {
+    "packId": "training-pipeline-pack",
+    "name": "智能体训练体系能力包",
+    "domain": "training",
+    "version": "1.0.0",
+    "maturity": 4,
+    "source": [
+      "全项目训练体系"
+    ]
+  },
+  "definition": "智能体训练体系公共能力：SFT/DPO 数据生成流水线 + 知识蒸馏引擎 + ChatML 转换 + 合规扫描 + 反馈聚合 + 周评估，训练方全流程工具箱。",
+  "value": "解决训练团队「流程不标准、数据不干净、合规不过关」问题：从数据生成到评估的门禁式流水线，复用即得企业级训练规范；适合任何要训练智能体的团队。",
+  "contents": "L1: SFT 711 条 + DPO 40 条黄金案例 + 反馈语料；L2: knowledge-distillation、skill-creator 技能；L3: /api/training/gold-cases、/api/training/chatml、/api/training/compliance-scan、/api/training/feedback-aggregate。",
+  "usage": "接入三步：① 跑数据生成（自有语料 + 蒸馏白名单源）② ChatML 转换（LLaMA-Factory 兼容）③ 合规扫描全绿后进训练；最佳实践：每批数据带版本 + 合规报告归档。",
+  "training": "本包即训练方法论：数据清洗（去重 FTS5/脱敏四级/质量 ≥0.7）；分布设计（边界 ≥20%/异常 ≥10%/对抗 ≥5%）；SFT 配比 1:3 起；DPO 偏好对 ≥5%；评测门槛准确率 ≥85%/拒答 ≥95%/幻觉 ≤3%/越狱 0。",
+  "interaction": "流水线操作傻瓜式：一键生成/一键扫描/一键转换；每步输出可读报告（非黑盒）；失败给出修复指引（不报错码）。",
+  "compliance": "① 蒸馏红线：仅开源协议（MIT/Apache/BSD/GPL）/公开论文/官方文档/用户授权 ② 禁止付费墙与违规爬取 ③ 7 大禁止标签扫描归零 ④ 数据溯源记录（license + trust ≥0.7）。",
+  "quality": "合规扫描 7 大标签 0 命中；生成数据质检一致率 ≥90%；ChatML 格式 100% 可被 LLaMA-Factory 解析；周评估全自动出报告。",
+  "security": "训练数据密钥/隐私脱敏；数据包传输加密；扫描脚本防绕过（多层检测）；评估集隔离（训练工程师不可见）。",
+  "operations": "反馈三源聚合（kb_feedback/feedback/kb_hit_log）；周评估趋势；数据版本 semver；蒸馏增量入库。",
+  "business": "L1 数据买断 ¥20/百万词元；L3 工具 API 词元制；训练陪跑咨询（D 混合制）项目制。",
+  "boundary": {
+    "capable": [
+      "SFT/DPO 数据批量生成",
+      "知识蒸馏（自有/开源/授权）",
+      "ChatML 格式转换（LLaMA-Factory 兼容）",
+      "7 大禁止标签合规扫描",
+      "周评估与反馈聚合"
+    ],
+    "incapable": [
+      "不提供算力/GPU",
+      "不承诺模型效果（需客户自训）",
+      "蒸馏仅限白名单来源"
+    ],
+    "requires": []
+  },
+  "industry": "适用：所有行业训练方（通用）；定制点：行业语料模板、行业合规标签扩展。",
+  "roadmap": "v1.1 RLHF/RLAIF 偏好采集增强；v1.2 评测集自动构建（对抗样本生成）；v1.3 多基座适配（Qwen/GLM/DeepSeek 模板）；v1.4 训练卡自动生成。",
+  "neural-capability-pack": {
+    "definition": "神经网络主流能力图谱：12 维度（RAG/GraphRAG/Agentic Search/LoRA/QLoRA/SFT/DPO/Continual Learning/Multimodal/Voice/Agent RL/Function Calling/Multi-Agent）选型决策框架，基于 ICLR 2026/ICML 2026 论文前沿。",
+    "value": "解决训练方「不知道用什么技术」问题：从知识检索到多智能体协作，全覆盖行业前沿；决策树式选型，门槛值可验证；适合任何要训练智能体的技术团队。",
+    "contents": "L1: NEURAL-CAPABILITY-MAP.md（12 能力 × 6 维度）；L2: 与 training-pipeline-pack 联动；L3: /api/neural/capabilities（列表）、/api/neural/recommend（行业→能力推荐）。",
+    "usage": "使用三步：① 确定场景（知识/微调/多模态/编排）② 按决策树选型 ③ 记录训练卡；最佳实践：RAG 优先于微调，LoRA 优先于全参，DPO 优先于 RLHF。",
+    "training": "本包为方法论不是模型：训练方按选型结果执行（如选 N4 LoRA → rank 8-64 + 量化 4bit + VRAM ≤16GB）；评测按各能力门槛值验收。",
+    "interaction": "决策树可视化（分支选择式）：一个输入 → 自动推荐能力组合；选型结果可导出到训练卡。",
+    "compliance": "① 能力选型建议仅供参考 ② 最终以训练方实测验证为准 ③ 不绑定特定框架（中立）。",
+    "quality": "12 能力覆盖 ICLR/ICML/ACL 2026 前沿（年度审定）；门槛值可验证；决策树覆盖 4 大场景分支。",
+    "security": "不涉及模型训练（纯方法论）；选型不引入额外安全风险；下游训练方自负责安全。",
+    "operations": "年度审定（ICLR/ICML 后更新）；新范式论文 → 强信号 → 进化提案；社区反馈回流。",
+    "business": "图谱免费（引流）；深度选型咨询项目制；与 training-pipeline-pack 联动打包。",
+    "boundary": "能：12 能力选型建议/决策框架/门槛引用/行业适配；不能：不提供算力/不训练模型/不承诺效果/不绑定框架；客户自备：自行选型决策与实测验证。",
+    "industry": "适用：全部行业（通用方法论）；定制点：行业专属能力组合（行业知识库 neuralCapabilities 字段）。",
+    "roadmap": "v1.1 纯 RLHF  revived（新时代方案）；v1.2 MoE 专家路由选型；v1.3 World Model 世界模型；v1.4 跨能力组合效果基准。"
+  }
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ASH 运营后台 · Agent Standards Hub</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#0a0e1a;--card:#121829;--gold:#d4af37;--text:#e8e8e8;--dim:#888;--ok:#4ade80;--warn:#fbbf24;--err:#f87171;--border:#1e2740}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;line-height:1.6;min-height:100vh}
+.wrap{max-width:1000px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:22px;color:var(--gold);margin-bottom:4px}
+.sub{color:var(--dim);font-size:13px;margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.card h2{font-size:16px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{text-align:center;padding:14px;background:rgba(255,255,255,0.03);border-radius:8px}
+.stat .num{font-size:24px;font-weight:700;color:var(--gold)}
+.stat .label{font-size:11px;color:var(--dim);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
+th{color:var(--dim);font-weight:400;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+tr:hover{background:rgba(255,255,255,0.02)}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px}
+.badge.active{background:rgba(74,222,128,0.15);color:var(--ok)}
+.badge.suspended{background:rgba(248,113,113,0.15);color:var(--err)}
+.bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:4px}
+.bar-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .3s}
+.input{width:100%;padding:10px 14px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none}
+.btn{display:inline-block;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;border:none}
+.btn-gold{background:var(--gold);color:#0a0e1a;font-weight:600}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.flex{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.empty{text-align:center;padding:30px;color:var(--dim);font-size:13px}
+.tab{display:flex;gap:2px;margin-bottom:16px;background:var(--card);border-radius:10px;padding:4px}
+.tab button{flex:1;padding:10px;border:none;background:transparent;color:var(--dim);font-size:14px;cursor:pointer;border-radius:8px}
+.tab button.active{background:var(--gold);color:#0a0e1a;font-weight:600}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ASH 运营后台</h1>
+  <p class="sub">Agent Standards Hub · 运营管理 — 客户/收入/线索/进化</p>
+
+  <div class="tab">
+    <button class="active" onclick="switchTab('overview')">📊 概览</button>
+    <button onclick="switchTab('clients')">👥 客户</button>
+    <button onclick="switchTab('leads')">📋 线索</button>
+    <button onclick="switchTab('evolution')">🧬 进化</button>
+    <button onclick="switchTab('orders')">💰 订单</button>
+  </div>
+
+  <!-- 概览 -->
+  <div id="tab-overview">
+    <div class="card">
+      <h2>📊 核心指标</h2>
+      <div class="grid" id="kpiGrid"><div class="empty">加载中…</div></div>
+    </div>
+    <div class="card">
+      <h2>📈 近 7 天调用趋势</h2>
+      <div id="trendBox"><div class="empty">加载中…</div></div>
+    </div>
+  </div>
+
+  <!-- 客户 -->
+  <div id="tab-clients" class="hidden">
+    <div class="card">
+      <h2>👥 客户列表</h2>
+      <div id="clientsBox"><div class="empty">加载中…</div></div>
+    </div>
+  </div>
+
+  <!-- 线索 -->
+  <div id="tab-leads" class="hidden">
+    <div class="card">
+      <h2>📋 需求线索（最新 20 条）</h2>
+      <div id="leadsBox"><div class="empty">加载中…</div></div>
+    </div>
+  </div>
+
+  <!-- 进化 -->
+  <div id="tab-evolution" class="hidden">
+    <div class="card">
+      <h2>🧬 进化日志</h2>
+      <div id="evolutionBox"><div class="empty">加载中…</div></div>
+    </div>
+    <div class="card">
+      <h2>🔧 进化操作</h2>
+      <div class="flex">
+        <button class="btn btn-gold" onclick="runScan()">立即扫描信号</button>
+        <button class="btn btn-ghost" onclick="runCards()">重生成知识卡</button>
+      </div>
+      <p id="evoMsg" class="hidden" style="margin-top:10px;font-size:13px"></p>
+    </div>
+  </div>
+
+  <!-- 订单 -->
+  <div id="tab-orders" class="hidden">
+    <div class="card">
+      <h2>💰 充值申请单（待处理 <span id="pendingCount" style="color:var(--warn)">0</span>）</h2>
+      <div id="ordersBox"><div class="empty">加载中…</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(name){
+  document.querySelectorAll('[id^=tab-]').forEach(function(el){el.classList.add('hidden')});
+  document.getElementById('tab-'+name).classList.remove('hidden');
+  document.querySelectorAll('.tab button').forEach(function(b){b.classList.remove('active')});
+  event.target.classList.add('active');
+  loadTab(name);
+}
+
+function loadTab(name){
+  if(name==='overview') loadOverview();
+  if(name==='clients') loadClients();
+  if(name==='leads') loadLeads();
+  if(name==='evolution') loadEvolution();
+  if(name==='orders') loadOrders();
+}
+
+function loadOrders(){
+  fetch('/api/admin/orders?limit=50').then(function(r){return r.json()}).then(function(d){
+    if(!d.ok || !d.orders.length) {document.getElementById('ordersBox').innerHTML='<div class="empty">暂无订单</div>';return;}
+    var pending = d.orders.filter(function(o){return o.status==='pending'}).length;
+    document.getElementById('pendingCount').textContent = pending;
+    var rows = d.orders.map(function(o){
+      var color = o.status==='confirmed' ? 'var(--ok)' : (o.status==='pending' ? 'var(--warn)' : 'var(--err)');
+      var action = o.status==='pending'
+        ? '<button class="btn btn-gold" style="padding:4px 10px;font-size:12px" onclick="orderAction(\''+o.id+'\',\'confirm\')">确认入账</button> '
+        + '<button class="btn btn-ghost" style="padding:4px 10px;font-size:12px" onclick="orderAction(\''+o.id+'\',\'reject\')">驳回</button>'
+        : '';
+      return '<tr><td>'+o.id+'</td><td>'+o.clientId+'</td><td>¥'+o.amount+'</td><td>'+o.method+'</td>'
+        +'<td style="color:'+color+'">'+o.status+(o.rejectReason?'（'+o.rejectReason+'）':'')+'</td><td>'+action+'</td></tr>';
+    }).join('');
+    document.getElementById('ordersBox').innerHTML = '<table><tr><th>单号</th><th>客户</th><th>金额</th><th>方式</th><th>状态</th><th>操作</th></tr>'+rows+'</table>';
+  }).catch(function(){document.getElementById('ordersBox').innerHTML='<div class="empty">加载失败</div>'});
+}
+
+function orderAction(orderId, action){
+  fetch('/api/admin/orders/'+orderId+'/'+action, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: action==='reject' ? JSON.stringify({reason:'运营驳回'}) : '{}'
+  }).then(function(r){return r.json()}).then(function(d){
+    if(d.ok){
+      alert(action==='confirm' ? '✅ 已确认入账 ¥'+d.order.amount : '✅ 已驳回');
+      loadOrders();
+    } else {
+      alert('⚠️ '+(d.error||'操作失败'));
+    }
+  });
+}
+
+function loadOverview(){
+  fetch('/api/admin/overview').then(function(r){return r.json()}).then(function(d){
+    if(!d.ok) return;
+    var k = d.kpi;
+    var html = ''
+      +'<div class="stat"><div class="num">'+k.clients+'</div><div class="label">客户总数</div></div>'
+      +'<div class="stat"><div class="num">'+k.leads+'</div><div class="label">需求线索</div></div>'
+      +'<div class="stat"><div class="num">'+k.monthCalls+'</div><div class="label">本月调用</div></div>'
+      +'<div class="stat"><div class="num">¥'+k.totalRevenue.toFixed(0)+'</div><div class="label">累计收入</div></div>'
+      +'<div class="stat"><div class="num">'+k.packs+'</div><div class="label">能力包</div></div>'
+      +'<div class="stat"><div class="num">'+k.industries+'</div><div class="label">行业知识</div></div>';
+    document.getElementById('kpiGrid').innerHTML = html;
+
+    if(d.trend && d.trend.length){
+      var rows = d.trend.map(function(t){
+        return '<tr><td>'+t.date+'</td><td>'+t.calls+'</td><td>'+t.tokens+'</td><td>¥'+t.cost.toFixed(2)+'</td></tr>';
+      }).join('');
+      document.getElementById('trendBox').innerHTML = '<table><tr><th>日期</th><th>调用</th><th>词元</th><th>费用</th></tr>'+rows+'</table>';
+    } else {
+      document.getElementById('trendBox').innerHTML = '<div class="empty">暂无调用数据</div>';
+    }
+  }).catch(function(){document.getElementById('kpiGrid').innerHTML='<div class="empty">加载失败</div>'});
+}
+
+function loadClients(){
+  fetch('/api/admin/clients').then(function(r){return r.json()}).then(function(d){
+    if(!d.ok || !d.clients.length) {document.getElementById('clientsBox').innerHTML='<div class="empty">暂无客户</div>';return;}
+    var rows = d.clients.map(function(c){
+      return '<tr><td>'+c.clientId+'</td><td>'+c.name+'</td><td><span class="badge '+c.status+'">'+c.status+'</span></td><td>'
+        +(c.createdAt||'-')+'</td><td>'+c.contact+'</td></tr>';
+    }).join('');
+    document.getElementById('clientsBox').innerHTML = '<table><tr><th>ID</th><th>名称</th><th>状态</th><th>注册</th><th>联系</th></tr>'+rows+'</table>';
+  }).catch(function(){document.getElementById('clientsBox').innerHTML='<div class="empty">加载失败</div>'});
+}
+
+function loadLeads(){
+  fetch('/api/admin/leads?limit=20').then(function(r){return r.json()}).then(function(d){
+    if(!d.ok || !d.leads.length) {document.getElementById('leadsBox').innerHTML='<div class="empty">暂无线索</div>';return;}
+    var rows = d.leads.map(function(l){
+      return '<tr><td>'+l.id+'</td><td>'+l.createdAt.slice(0,10)+'</td><td>'+l.industry+'</td><td>'
+        +(l.query||'').slice(0,30)+'</td><td>¥'+(l.quoteYuan||0)+'</td></tr>';
+    }).join('');
+    document.getElementById('leadsBox').innerHTML = '<table><tr><th>ID</th><th>日期</th><th>行业</th><th>需求</th><th>报价</th></tr>'+rows+'</table>';
+  }).catch(function(){document.getElementById('leadsBox').innerHTML='<div class="empty">加载失败</div>'});
+}
+
+function loadEvolution(){
+  fetch('/api/admin/evolution').then(function(r){return r.json()}).then(function(d){
+    if(!d.ok || !d.logs || !d.logs.length) {document.getElementById('evolutionBox').innerHTML='<div class="empty">暂无进化记录</div>';return;}
+    var rows = d.logs.map(function(l){
+      var color = l.action==='apply'?'var(--ok)':'var(--warn)';
+      return '<tr><td>'+l.ts.slice(0,16).replace('T',' ')+'</td><td style="color:'+color+'">'+l.action+'</td><td>'+l.id+'</td><td>'+l.type+'</td></tr>';
+    }).join('');
+    document.getElementById('evolutionBox').innerHTML = '<table><tr><th>时间</th><th>动作</th><th>提案ID</th><th>类型</th></tr>'+rows+'</table>';
+  }).catch(function(){document.getElementById('evolutionBox').innerHTML='<div class="empty">加载失败</div>'});
+}
+
+function runScan(){
+  document.getElementById('evoMsg').classList.remove('hidden');
+  document.getElementById('evoMsg').textContent='⏳ 扫描中…';
+  fetch('/api/admin/scan').then(function(r){return r.json()}).then(function(d){
+    var msg=document.getElementById('evoMsg');
+    if(d.ok){msg.style.color='var(--ok)';msg.textContent='✅ 发现 '+d.signals+' 个信号';loadEvolution();}
+    else{msg.style.color='var(--err)';msg.textContent='⚠️ '+(d.error||'扫描失败');}
+  }).catch(function(){document.getElementById('evoMsg').textContent='⚠️ 扫描失败';});
+}
+function runCards(){
+  document.getElementById('evoMsg').classList.remove('hidden');
+  document.getElementById('evoMsg').textContent='⏳ 生成中…';
+  fetch('/api/admin/gencards').then(function(r){return r.json()}).then(function(d){
+    var msg=document.getElementById('evoMsg');
+    if(d.ok){msg.style.color='var(--ok)';msg.textContent='✅ 知识卡已重新生成';}
+    else{msg.style.color='var(--err)';msg.textContent='⚠️ '+(d.error||'生成失败');}
+  }).catch(function(){document.getElementById('evoMsg').textContent='⚠️ 生成失败';});
+}
+
+loadOverview();
+</script>
+</body>
+</html>

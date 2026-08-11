@@ -1,0 +1,88 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Agent Standards Hub API",
+    "description": "智能体训练规范中心 — 需求评估、知识卡、神经网络推荐、评估报告、客户管理与词元计费",
+    "version": "1.0.0",
+    "contact": { "name": "ASH Team", "url": "https://sgmt-taojing.github.io/agent-training-standards/" }
+  },
+  "servers": [
+    { "url": "http://localhost:8933", "description": "Local" },
+    { "url": "https://sgmt-taojing.github.io/agent-training-standards", "description": "Public (static + local API)" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": { "type": "apiKey", "in": "header", "name": "X-API-Key" }
+    }
+  },
+  "tags": [
+    { "name": "public", "description": "公共接口（免费）" },
+    { "name": "auth", "description": "客户认证" },
+    { "name": "client", "description": "客户接口（需 Key）" },
+    { "name": "admin", "description": "运营管理" }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": { "tags": ["public"], "summary": "健康检查", "responses": { "200": { "description": "OK" } } }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": ["auth"], "summary": "注册客户获取 API Key",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "name": { "type": "string" }, "contact": { "type": "string" } }, "required": ["name"] } } } },
+        "responses": { "200": { "description": "注册成功" }, "400": { "description": "参数错误" } }
+      }
+    },
+    "/api/auth/me": {
+      "get": { "tags": ["client"], "summary": "获取账户信息", "security": [{ "ApiKeyAuth": [] }], "responses": { "200": { "description": "OK" }, "401": { "description": "未授权" } } }
+    },
+    "/api/auth/usage": {
+      "get": { "tags": ["client"], "summary": "用量明细", "security": [{ "ApiKeyAuth": [] }], "parameters": [{ "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }], "responses": { "200": { "description": "OK" } } }
+    },
+    "/api/auth/recharge": {
+      "post": { "tags": ["client"], "summary": "充值", "security": [{ "ApiKeyAuth": [] }], "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "amount": { "type": "number" } } } } } }, "responses": { "200": { "description": "充值成功" } } }
+    },
+    "/api/auth/reports": {
+      "get": { "tags": ["client"], "summary": "我的报告列表", "security": [{ "ApiKeyAuth": [] }], "responses": { "200": { "description": "OK" } } }
+    },
+    "/api/engine/analyze": {
+      "post": {
+        "tags": ["public"], "summary": "需求评估（核心端点）",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "query": { "type": "string", "maxLength": 2000 }, "industry": { "type": "string" }, "target": { "type": "string", "default": "对话助手" } }, "required": ["query"] } } } },
+        "responses": { "200": { "description": "需求卡" } }
+      }
+    },
+    "/api/billing/quote": {
+      "post": { "tags": ["public"], "summary": "报价预估", "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "query": { "type": "string" }, "monthlyCalls": { "type": "integer", "default": 10000 }, "dataTokens": { "type": "integer" } } } } } }, "responses": { "200": { "description": "报价" } } }
+    },
+    "/api/billing/prices": {
+      "get": { "tags": ["public"], "summary": "计费标准", "responses": { "200": { "description": "OK" } } }
+    },
+    "/api/knowledge-cards": {
+      "get": { "tags": ["public"], "summary": "知识卡列表", "responses": { "200": { "description": "8 张知识卡" } } }
+    },
+    "/api/knowledge-card/{packId}": {
+      "get": { "tags": ["public"], "summary": "单张知识卡（15 维度）", "parameters": [{ "name": "packId", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "OK" }, "404": { "description": "不存在" } } }
+    },
+    "/api/packs": {
+      "get": { "tags": ["public"], "summary": "能力包注册表", "responses": { "200": { "description": "8 包" } } }
+    },
+    "/api/neural/capabilities": {
+      "get": { "tags": ["public"], "summary": "12 维神经网络能力列表", "responses": { "200": { "description": "OK" } } }
+    },
+    "/api/neural/recommend": {
+      "post": { "tags": ["public"], "summary": "行业→神经能力推荐", "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "industry": { "type": "string" } } } } } }, "responses": { "200": { "description": "OK" } } }
+    },
+    "/api/report/pdf": {
+      "post": { "tags": ["public"], "summary": "生成评估报告", "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "query": { "type": "string" }, "industry": { "type": "string" }, "target": { "type": "string" }, "webhook": { "type": "string", "description": "PDF 完成回调 URL" } } } } } }, "responses": { "200": { "description": "MD 即时返回，PDF 异步" } } }
+    },
+    "/api/report/file/{id}.{format}": {
+      "get": { "tags": ["public"], "summary": "下载报告文件", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }, { "name": "format", "in": "path", "required": true, "schema": { "type": "string", "enum": ["md", "pdf", "html"] } }], "responses": { "200": { "description": "文件流" }, "404": { "description": "不存在" } } }
+    },
+    "/api/admin/overview": { "get": { "tags": ["admin"], "summary": "运营概览 KPI", "responses": { "200": { "description": "OK" } } } },
+    "/api/admin/clients": { "get": { "tags": ["admin"], "summary": "客户列表", "responses": { "200": { "description": "OK" } } } },
+    "/api/admin/leads": { "get": { "tags": ["admin"], "summary": "需求线索", "parameters": [{ "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }], "responses": { "200": { "description": "OK" } } } },
+    "/api/admin/evolution": { "get": { "tags": ["admin"], "summary": "进化日志", "responses": { "200": { "description": "OK" } } } },
+    "/api/admin/scan": { "post": { "tags": ["admin"], "summary": "触发规范扫描", "responses": { "200": { "description": "OK" } } } },
+    "/api/admin/gencards": { "post": { "tags": ["admin"], "summary": "重生成知识卡", "responses": { "200": { "description": "OK" } } } }
+  }
+}

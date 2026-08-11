@@ -1,0 +1,58 @@
+{
+  "schema": "knowledge-card/v1",
+  "generatedAt": "2026-08-10T14:20:44.983Z",
+  "identity": {
+    "packId": "agent-orchestration-pack",
+    "name": "智能体编排与自进化能力包",
+    "domain": "agent",
+    "version": "1.0.0",
+    "maturity": 4,
+    "source": [
+      "smart-home-family",
+      "mingli-baojian"
+    ]
+  },
+  "definition": "智能体编排与自进化公共能力：Plan→Do→Check→Act 闭环调度 + KB 优先三级分级（≥0.7 直答/0.4-0.7 润色/<0.4 AI）+ 终身记忆 + 多模块联动。",
+  "value": "解决智能体「单点能、整体乱、不会进化」问题：统一调度 + 知识优先降成本提速 + 使用即进化；适合任何要上生产的多模块智能体。",
+  "contents": "L2: brainstorming、deep-research、hermes-evolution 技能；L3: /api/agent/plan、/api/agent/execute、/api/agent/reflect、/api/agent/memory、/api/agent/kb-first。",
+  "usage": "接入三步：① 注册模块到 agent_core ② 配置 KB 优先规则 ③ 启用记忆与自进化；最佳实践：KB 命中 ≥0.7 直答（P95 <1.5s），AI 调用量下降 ≥60%。",
+  "training": "引用本包训练：编排话术/工具调用语料；评测集含多步任务完成率（≥90%）与工具选择准确率；门槛：决策准确率 ≥85%、自训练周期 ≤24h。",
+  "interaction": "任务进度可视化（当前步骤/下一步）；失败重试与降级友好提示；用户可随时打断修正；记忆使用透明可查可删。",
+  "compliance": "① 自进化数据需授权 ② 记忆内容脱敏 ③ 工具调用权限最小化 ④ 长时任务超时策略必须配置。",
+  "quality": "KB 直答 P95 <1.5s；AI 调用降量 ≥60%；调度成功率 ≥99%；记忆检索命中 ≥90%；进化空转保护（无输入不 bump）。",
+  "security": "工具调用白名单 + 权限分级；记忆库加密 + 可清除；注入防护（用户输入不可越权）；审计日志全链路。",
+  "operations": "自进化环：usage log → feedback → distill → eval 门槛 → semver bump → release；季度进化报告；模块健康看板。",
+  "business": "L2 订阅 ¥3,900/年；L3 编排 API 词元制；定制工作流项目制。",
+  "boundary": {
+    "capable": [
+      "Plan→Do→Check→Act 闭环",
+      "KB 优先三级分级（≥0.7 直答/0.4-0.7 润色/<0.4 AI）",
+      "终身记忆与增量训练",
+      "多模块联动调度"
+    ],
+    "incapable": [
+      "不包含具体业务知识（需搭配领域能力包）",
+      "不自带算力",
+      "长时任务需客户配置超时策略"
+    ],
+    "requires": []
+  },
+  "industry": "适用：所有行业智能体底座（通用）；定制点：行业工作流模板、合规审计扩展。",
+  "roadmap": "v1.1 多智能体协作（子代理池）；v1.2 记忆图结构；v1.3 自主目标分解；v1.4 跨设备编排。",
+  "neural-capability-pack": {
+    "definition": "神经网络主流能力图谱：12 维度（RAG/GraphRAG/Agentic Search/LoRA/QLoRA/SFT/DPO/Continual Learning/Multimodal/Voice/Agent RL/Function Calling/Multi-Agent）选型决策框架，基于 ICLR 2026/ICML 2026 论文前沿。",
+    "value": "解决训练方「不知道用什么技术」问题：从知识检索到多智能体协作，全覆盖行业前沿；决策树式选型，门槛值可验证；适合任何要训练智能体的技术团队。",
+    "contents": "L1: NEURAL-CAPABILITY-MAP.md（12 能力 × 6 维度）；L2: 与 training-pipeline-pack 联动；L3: /api/neural/capabilities（列表）、/api/neural/recommend（行业→能力推荐）。",
+    "usage": "使用三步：① 确定场景（知识/微调/多模态/编排）② 按决策树选型 ③ 记录训练卡；最佳实践：RAG 优先于微调，LoRA 优先于全参，DPO 优先于 RLHF。",
+    "training": "本包为方法论不是模型：训练方按选型结果执行（如选 N4 LoRA → rank 8-64 + 量化 4bit + VRAM ≤16GB）；评测按各能力门槛值验收。",
+    "interaction": "决策树可视化（分支选择式）：一个输入 → 自动推荐能力组合；选型结果可导出到训练卡。",
+    "compliance": "① 能力选型建议仅供参考 ② 最终以训练方实测验证为准 ③ 不绑定特定框架（中立）。",
+    "quality": "12 能力覆盖 ICLR/ICML/ACL 2026 前沿（年度审定）；门槛值可验证；决策树覆盖 4 大场景分支。",
+    "security": "不涉及模型训练（纯方法论）；选型不引入额外安全风险；下游训练方自负责安全。",
+    "operations": "年度审定（ICLR/ICML 后更新）；新范式论文 → 强信号 → 进化提案；社区反馈回流。",
+    "business": "图谱免费（引流）；深度选型咨询项目制；与 training-pipeline-pack 联动打包。",
+    "boundary": "能：12 能力选型建议/决策框架/门槛引用/行业适配；不能：不提供算力/不训练模型/不承诺效果/不绑定框架；客户自备：自行选型决策与实测验证。",
+    "industry": "适用：全部行业（通用方法论）；定制点：行业专属能力组合（行业知识库 neuralCapabilities 字段）。",
+    "roadmap": "v1.1 纯 RLHF  revived（新时代方案）；v1.2 MoE 专家路由选型；v1.3 World Model 世界模型；v1.4 跨能力组合效果基准。"
+  }
+}

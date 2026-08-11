@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ASH 客户后台 · Agent Standards Hub</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#0a0e1a;--card:#121829;--gold:#d4af37;--text:#e8e8e8;--dim:#888;--ok:#4ade80;--warn:#fbbf24;--err:#f87171;--border:#1e2740}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;line-height:1.6;min-height:100vh}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:22px;color:var(--gold);margin-bottom:6px}
+.sub{color:var(--dim);font-size:13px;margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.card h2{font-size:16px;margin-bottom:12px;color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.stat{text-align:center;padding:14px;background:rgba(255,255,255,0.03);border-radius:8px}
+.stat .num{font-size:28px;font-weight:700;color:var(--gold)}
+.stat .label{font-size:12px;color:var(--dim);margin-top:4px}
+.stat .num.ok{color:var(--ok)}.stat .num.warn{color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
+th{color:var(--dim);font-weight:400;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+tr:hover{background:rgba(255,255,255,0.02)}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px}
+.badge.ok{background:rgba(74,222,128,0.15);color:var(--ok)}
+.badge.warn{background:rgba(251,191,36,0.15);color:var(--warn)}
+.input{width:100%;padding:10px 14px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none}
+.input:focus{border-color:var(--gold)}
+.btn{display:inline-block;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;border:none;text-decoration:none}
+.btn-gold{background:var(--gold);color:#0a0e1a;font-weight:600}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.flex{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.hidden{display:none}
+.empty{text-align:center;padding:40px;color:var(--dim);font-size:14px}
+.login-hint{background:rgba(212,175,55,0.05);border:1px solid rgba(212,175,55,0.3);border-radius:8px;padding:14px;font-size:13px;margin-bottom:16px}
+a{color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ASH 客户后台</h1>
+  <p class="sub">Agent Standards Hub · 智能体训练规范中心 — 账户 / 用量 / 报告</p>
+
+  <div id="loginGate">
+    <div class="card">
+      <div class="login-hint">
+        💡 在 <a href="/" target="_blank">ASH 市场</a> 注册后获得 API Key，在此输入即可查看账户详情。<br>
+        首月赠送 <b>100 万词元</b> 免费额度。
+      </div>
+      <h2>登录</h2>
+      <div class="flex">
+        <input class="input" id="keyInput" type="password" placeholder="粘贴你的 ASH API Key（ash_ 开头）" style="flex:1">
+        <button class="btn btn-gold" onclick="doLogin()">进入后台</button>
+      </div>
+      <p id="loginErr" class="hidden" style="color:var(--err);margin-top:8px;font-size:13px"></p>
+    </div>
+  </div>
+
+  <div id="dash" class="hidden">
+    <!-- 账户概览 -->
+    <div class="card">
+      <h2>📊 账户概览</h2>
+      <div class="grid" id="statsGrid"></div>
+      <div style="margin-top:12px;font-size:12px;color:var(--dim)">
+        客户编号：<span id="cid"></span> · 注册时间：<span id="since"></span>
+      </div>
+    </div>
+
+    <!-- 用量明细 -->
+    <div class="card">
+      <h2>📈 近期调用（最近 20 条）</h2>
+      <div id="usageBox"><div class="empty">加载中…</div></div>
+    </div>
+
+    <!-- 我的报告 -->
+    <div class="card">
+      <h2>📄 评估报告</h2>
+      <div id="reportBox"><div class="empty">加载中…</div></div>
+    </div>
+
+    <!-- 订阅 -->
+    <div class="card">
+      <h2>⭐ 年度订阅（¥3,900/年 · 含 2,000 万词元）</h2>
+      <p style="font-size:13px;color:var(--dim);margin-bottom:10px">
+        订阅客户调用 <b style="color:var(--gold)">优先扣订阅额度</b>，额度用尽后依次扣免费额度与余额。<br>
+        当前订阅：<span id="subStatus">未开通</span>
+      </p>
+      <button class="btn btn-gold" onclick="subscribe()">开通订阅 ¥3,900/年</button>
+      <p id="subMsg" class="hidden" style="margin-top:8px;font-size:13px"></p>
+    </div>
+
+    <!-- 充值（申请单） -->
+    <div class="card">
+      <h2>💰 充值（申请制）</h2>
+      <p style="font-size:13px;color:var(--dim);margin-bottom:10px">当前余额：<b id="balanceText" style="color:var(--gold)">¥0</b> · 提交申请后由 ASH 运营确认入账（最低 ¥500）</p>
+      <div class="flex">
+        <input class="input" id="rcAmount" type="number" placeholder="金额（¥500 起）" style="width:140px">
+        <select class="input" id="rcMethod" style="width:140px">
+          <option value="bank">对公转账</option>
+          <option value="alipay">支付宝</option>
+          <option value="wechat">微信</option>
+          <option value="invoice">发票结算</option>
+        </select>
+        <button class="btn btn-gold" onclick="rechargeRequest()">提交申请</button>
+      </div>
+      <div id="rcOrders" style="margin-top:10px"></div>
+      <p id="rechargeMsg" class="hidden" style="margin-top:8px;font-size:13px"></p>
+    </div>
+
+    <div style="text-align:center;margin-top:20px">
+      <button class="btn btn-ghost" onclick="logout()">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var API = '';  // same origin
+var savedKey = localStorage.getItem('ash_api_key') || '';
+
+if (savedKey) { document.getElementById('keyInput').value = savedKey; doLogin(); }
+
+function doLogin() {
+  var key = document.getElementById('keyInput').value.trim();
+  if (!key) return;
+  fetch(API + '/api/auth/me', { headers: { 'X-API-Key': key } })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (!d.ok) {
+        document.getElementById('loginErr').textContent = d.error || 'Key 无效';
+        document.getElementById('loginErr').classList.remove('hidden');
+        return;
+      }
+      localStorage.setItem('ash_api_key', key);
+      document.getElementById('loginGate').classList.add('hidden');
+      document.getElementById('dash').classList.remove('hidden');
+      loadDash(d, key);
+    })
+    .catch(function() {
+      document.getElementById('loginErr').textContent = '服务不可用，请稍后重试';
+      document.getElementById('loginErr').classList.remove('hidden');
+    });
+}
+
+function loadDash(me, key) {
+  document.getElementById('cid').textContent = me.clientId;
+  document.getElementById('since').textContent = me.createdAt || '-';
+  var freeLeft = me.freeQuotaLeft || 0;
+  var bal = me.balanceYuan || 0;
+  document.getElementById('balanceText').textContent = '¥' + bal.toFixed(2);
+
+  var statsHtml = ''
+    + '<div class="stat"><div class="num ' + (freeLeft > 0 ? 'ok' : 'warn') + '">' + (freeLeft / 10000).toFixed(1) + '万</div><div class="label">免费额度剩余</div></div>'
+    + '<div class="stat"><div class="num">¥' + bal.toFixed(2) + '</div><div class="label">账户余额</div></div>'
+    + '<div class="stat"><div class="num">' + (me.monthCalls || 0) + '</div><div class="label">本月调用</div></div>'
+    + '<div class="stat"><div class="num">' + (me.monthTokens || 0).toLocaleString() + '</div><div class="label">本月词元</div></div>';
+  document.getElementById('statsGrid').innerHTML = statsHtml;
+
+  loadUsage(key);
+  loadReports(key);
+  loadOrders();
+}
+
+function loadUsage(key) {
+  fetch(API + '/api/auth/usage?limit=20', { headers: { 'X-API-Key': key } })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (!d.ok || !d.records || !d.records.length) {
+        document.getElementById('usageBox').innerHTML = '<div class="empty">暂无调用记录</div>';
+        return;
+      }
+      var rows = d.records.map(function(r) {
+        return '<tr><td>' + r.ts.slice(5, 16).replace('T', ' ') + '</td><td>' + r.endpoint + '</td><td>'
+          + (r.inTokens + r.outTokens) + '</td><td>¥' + r.costYuan + '</td><td>' + (r.freeQuotaLeft !== undefined ? r.freeQuotaLeft : '-') + '</td></tr>';
+      }).join('');
+      document.getElementById('usageBox').innerHTML = '<table><tr><th>时间</th><th>端点</th><th>词元</th><th>费用</th><th>免费余额</th></tr>' + rows + '</table>';
+    })
+    .catch(function() { document.getElementById('usageBox').innerHTML = '<div class="empty">加载失败</div>'; });
+}
+
+function loadReports(key) {
+  fetch(API + '/api/auth/reports', { headers: { 'X-API-Key': key } })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (!d.ok || !d.reports || !d.reports.length) {
+        document.getElementById('reportBox').innerHTML = '<div class="empty">暂无报告。<a href="/" target="_blank">去市场生成评估报告 →</a></div>';
+        return;
+      }
+      var items = d.reports.map(function(r) {
+        return '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">'
+          + '<div><div style="font-size:14px">' + r.id + '</div><div style="font-size:12px;color:var(--dim)">' + r.createdAt + '</div></div>'
+          + '<div><a class="btn btn-ghost" href="' + API + '/api/report/file/' + r.id + '.md" target="_blank" style="font-size:12px;padding:6px 12px">MD</a> '
+          + '<a class="btn btn-ghost" href="' + API + '/api/report/file/' + r.id + '.pdf" target="_blank" style="font-size:12px;padding:6px 12px">PDF</a></div>'
+          + '</div>';
+      }).join('');
+      document.getElementById('reportBox').innerHTML = items;
+    })
+    .catch(function() { document.getElementById('reportBox').innerHTML = '<div class="empty">加载失败</div>'; });
+}
+
+function subscribe() {
+  var key = localStorage.getItem('ash_api_key');
+  fetch(API + '/api/auth/subscribe', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-API-Key': key }
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      var msg = document.getElementById('subMsg');
+      msg.classList.remove('hidden');
+      if (d.ok) {
+        msg.style.color = 'var(--ok)';
+        msg.textContent = '✅ 订阅成功！额度 ' + (d.subscription.quotaLeft / 10000).toFixed(0) + ' 万词元，到期 ' + d.subscription.expiresAt.slice(0, 10);
+        document.getElementById('subStatus').textContent = 'Pro（到期 ' + d.subscription.expiresAt.slice(0, 10) + '）';
+        document.getElementById('balanceText').textContent = '¥' + d.balance.toFixed(2);
+      } else {
+        msg.style.color = 'var(--err)';
+        msg.textContent = '⚠️ ' + (d.error || '订阅失败');
+      }
+    });
+}
+
+function rechargeRequest() {
+  var key = localStorage.getItem('ash_api_key');
+  var amount = parseFloat(document.getElementById('rcAmount').value);
+  var method = document.getElementById('rcMethod').value;
+  if (!amount || amount < 500) {
+    var msg = document.getElementById('rechargeMsg');
+    msg.classList.remove('hidden');
+    msg.style.color = 'var(--err)';
+    msg.textContent = '⚠️ 最低充值 ¥500';
+    return;
+  }
+  fetch(API + '/api/auth/recharge-request', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-API-Key': key },
+    body: JSON.stringify({ amount: amount, method: method, note: '客户后台充值申请' })
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      var msg = document.getElementById('rechargeMsg');
+      msg.classList.remove('hidden');
+      if (d.ok) {
+        msg.style.color = 'var(--ok)';
+        msg.textContent = '✅ 申请已提交（单号 ' + d.order.id + '），等待运营确认入账';
+        loadOrders();
+      } else {
+        msg.style.color = 'var(--err)';
+        msg.textContent = '⚠️ ' + (d.error || '提交失败');
+      }
+    });
+}
+
+function loadOrders() {
+  var key = localStorage.getItem('ash_api_key');
+  fetch(API + '/api/auth/orders', { headers: { 'X-API-Key': key } })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (!d.ok || !d.orders.length) {
+        document.getElementById('rcOrders').innerHTML = '';
+        return;
+      }
+      var rows = d.orders.map(function(o) {
+        var color = o.status === 'confirmed' ? 'var(--ok)' : (o.status === 'pending' ? 'var(--warn)' : 'var(--err)');
+        return '<div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border)">'
+          + '<span>' + o.id + ' · ¥' + o.amount + ' · ' + o.method + '</span>'
+          + '<span style="color:' + color + '">' + o.status + (o.rejectReason ? '（' + o.rejectReason + '）' : '') + '</span></div>';
+      }).join('');
+      document.getElementById('rcOrders').innerHTML = '<div style="font-size:12px;color:var(--dim);margin-bottom:4px">我的申请单：</div>' + rows;
+    });
+}
+
+function logout() {
+  localStorage.removeItem('ash_api_key');
+  location.reload();
+}
+</script>
+</body>
+</html>
