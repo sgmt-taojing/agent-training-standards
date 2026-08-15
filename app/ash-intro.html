@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ASH · 智能体训练规范中心 — 产品介绍</title>
+<meta name="description" content="ASH 让训练智能体有章可循：15 维需求卡、12 类神经能力、按词元计费、邮件全程通知。">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#e6edf3;--dim:#8b949e;--gold:#d4af37;--green:#3fb950;--blue:#58a6ff;--amber:#d29922;--red:#f85149}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:0}
+.wrap{max-width:980px;margin:0 auto;padding:48px 24px}
+.hero{text-align:center;padding:60px 20px;background:radial-gradient(ellipse at top,rgba(212,175,55,.15),transparent 60%);border-bottom:1px solid var(--border)}
+.hero h1{font-size:38px;background:linear-gradient(135deg,var(--gold),#f0c75e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.hero .tag{font-size:15px;color:var(--dim);max-width:680px;margin:0 auto}
+.hero .cta{margin-top:24px}
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;font-size:14px;text-decoration:none;font-weight:600;transition:.2s;border:none;cursor:pointer}
+.btn-gold{background:var(--gold);color:#0d1117}
+.btn-gold:hover{background:#f0c75e;transform:translateY(-1px)}
+.btn-ghost{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.btn-ghost:hover{background:rgba(212,175,55,.1)}
+h2{font-size:22px;margin:48px 0 16px;color:var(--gold);border-left:4px solid var(--gold);padding-left:14px}
+h3{font-size:17px;margin:20px 0 10px;color:var(--text)}
+h3::before{content:"▸";color:var(--gold);margin-right:8px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;transition:.2s}
+.card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.card .ic{font-size:24px;margin-bottom:8px;display:inline-block;width:42px;height:42px;background:rgba(212,175,55,.12);border-radius:8px;text-align:center;line-height:42px;color:var(--gold)}
+.card h4{font-size:15px;margin-bottom:6px}
+.card p{font-size:13px;color:var(--dim)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:20px 0}
+.metric{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.metric .num{font-size:30px;font-weight:800;color:var(--gold)}
+.metric .lbl{font-size:12px;color:var(--dim);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:14px 0}
+th{background:rgba(212,175,55,.08);color:var(--gold);text-align:left;padding:9px 12px;border:1px solid var(--border)}
+td{padding:9px 12px;border:1px solid var(--border)}
+tbody tr:nth-child(odd){background:rgba(255,255,255,.02)}
+code{background:#0a0e1a;padding:2px 7px;border-radius:4px;font-size:13px;color:var(--gold)}
+.badge{display:inline-block;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:600;margin-right:6px}
+.badge-gold{background:rgba(212,175,55,.15);color:var(--gold)}
+.badge-green{background:rgba(63,185,80,.15);color:var(--green)}
+.badge-blue{background:rgba(88,166,255,.15);color:var(--blue)}
+.badge-red{background:rgba(248,81,73,.15);color:var(--red)}
+.timeline{margin:20px 0;padding:18px;background:var(--card);border:1px solid var(--border);border-radius:10px}
+.tl-step{display:flex;gap:14px;padding:10px 0;border-bottom:1px dashed var(--border)}
+.tl-step:last-child{border-bottom:none}
+.tl-step .n{min-width:30px;height:30px;border-radius:50%;background:var(--gold);color:#0d1117;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.tl-step .t{font-size:14px}
+.tl-step .t b{color:var(--gold)}
+.q{background:rgba(212,175,55,.06);border-left:3px solid var(--gold);padding:14px 18px;margin:14px 0;border-radius:0 8px 8px 0;font-style:italic;color:var(--dim)}
+.endpoints{background:#0a0e1a;padding:14px 18px;border-radius:8px;font-family:'SF Mono','Monaco',monospace;font-size:13px;overflow-x:auto}
+.endpoints .row{padding:4px 0;border-bottom:1px dashed #1f2937}
+.endpoints .row:last-child{border-bottom:none}
+.method{display:inline-block;width:60px;font-weight:800;margin-right:10px}
+.GET{color:var(--blue)}
+.POST{color:var(--green)}
+.PUT{color:var(--amber)}
+.DEL{color:var(--red)}
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:20px 0}
+.price{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;text-align:center}
+.price .h{font-size:13px;color:var(--dim);margin-bottom:6px}
+.price .v{font-size:26px;font-weight:800;color:var(--gold)}
+.price .u{font-size:12px;color:var(--dim);margin-top:4px}
+.feature{display:flex;gap:10px;align-items:start;padding:8px 0}
+.feature .check{color:var(--green);font-weight:800;margin-top:2px}
+.footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);text-align:center;color:var(--dim);font-size:13px}
+.footer a{color:var(--gold);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<section class="hero">
+<div class="wrap" style="padding:0">
+<h1>ASH · 智能体训练规范中心</h1>
+<p class="tag">让训练智能体有章可循 — 一份规范 · 一组能力 · 一份报价 · 一封邮件</p>
+<p style="margin-top:14px">
+<span class="badge badge-gold">中立第三方</span>
+<span class="badge badge-blue">15 维知识卡</span>
+<span class="badge badge-green">12 类神经能力</span>
+<span class="badge badge-red">按词元计费</span>
+</p>
+<div class="cta">
+<a class="btn btn-gold" href="https://sgmt-taojing.github.io/agent-training-standards/">立即体验</a>
+<a class="btn btn-ghost" href="app/seed-trail.html" style="margin-left:8px">查看示例场景</a>
+</div>
+</div>
+</section>
+
+<div class="wrap">
+
+<h2>客户在问什么？</h2>
+<div class="q">"我想训练一个智能体，但不知道该怎么做。"</div>
+
+<p>高频问题：选型迷茫（NLP/LLM/RAG/Agent 怎么选？）、预算模糊（训练一个问答助手要花多少？）、合规焦虑（数据从哪来？可商用吗？）、路径复杂（7 类知识、12 维度、几十种能力——无从下手）、效果难评（训练完不知道好不好）。</p>
+
+<h2>ASH 定位</h2>
+<div class="grid2">
+<div class="card">
+<div class="ic">⚖️</div>
+<h4>中立第三方</h4>
+<p>不绑定任何 LLM / 向量库 / 训练框架。卖的是规范、能力、API，不卖模型。</p>
+</div>
+<div class="card">
+<div class="ic">📐</div>
+<h4>15 维全覆盖</h4>
+<p>每个需求点拆 15 个维度（缺一维不算完整），让你看到完整的训练方案。</p>
+</div>
+<div class="card">
+<div class="ic">💰</div>
+<h4>按词元计费</h4>
+<p>¥2/百万输入、¥8/百万输出、数据 ¥20/百万词元。先用后付，无锁定。</p>
+</div>
+<div class="card">
+<div class="ic">📧</div>
+<h4>邮件全程通知</h4>
+<p>欢迎 / 订阅确认 / 充值到账 / 驳回 / 额度预警 / 报告完成 / 周报 — 7 场景自动。</p>
+</div>
+</div>
+
+<h2>核心指标</h2>
+<div class="metrics">
+<div class="metric"><div class="num">15</div><div class="lbl">知识维度</div></div>
+<div class="metric"><div class="num">12</div><div class="lbl">神经能力</div></div>
+<div class="metric"><div class="num">8</div><div class="lbl">行业覆盖</div></div>
+<div class="metric"><div class="num">30+</div><div class="lbl">公开 API</div></div>
+<div class="metric"><div class="num">7</div><div class="lbl">邮件场景</div></div>
+<div class="metric"><div class="num">4</div><div class="lbl">自动化 Cron</div></div>
+</div>
+
+<h2>5 大产品模块</h2>
+<table>
+<tr><th>模块</th><th>端点</th><th>说明</th></tr>
+<tr><td><b>需求评估引擎</b></td><td><code>POST /api/engine/analyze</code></td><td>30 秒出 15 维需求卡</td></tr>
+<tr><td><b>知识卡中心</b></td><td><code>GET /api/knowledge-cards</code></td><td>15 维 × 8 行业全覆盖</td></tr>
+<tr><td><b>神经能力推荐</b></td><td><code>POST /api/neural/recommend</code></td><td>按行业智能推荐 12 类神经能力</td></tr>
+<tr><td><b>能力包市场</b></td><td><code>GET /api/packs</code></td><td>30+ 即用型能力包，按需订阅</td></tr>
+<tr><td><b>评估报告 + PDF</b></td><td><code>POST /api/report/pdf</code></td><td>自动生成 Markdown + PDF 评估报告</td></tr>
+</table>
+
+<h2>5 步客户旅程</h2>
+<div class="timeline">
+<div class="tl-step"><div class="n">1</div><div class="t"><b>免费试用</b> — 5 场景动态演示（心理咨询/中医/金融/教育/电商），一键生成专属 API Key + 100 万词元</div></div>
+<div class="tl-step"><div class="n">2</div><div class="t"><b>需求评估</b> — 输入训练方向 → 30 秒出 15 维需求卡（含风险/合规/路径）</div></div>
+<div class="tl-step"><div class="n">3</div><div class="t"><b>能力推荐</b> — 基于行业 + 需求 → 智能匹配 12 类神经能力 + 推荐能力包</div></div>
+<div class="tl-step"><div class="n">4</div><div class="t"><b>订阅 + 充值</b> — ¥3,900/年含 2,000 万词元（首月 100 万免费）；按需 ¥2/百万输入 + ¥8/百万输出</div></div>
+<div class="tl-step"><div class="n">5</div><div class="t"><b>月度账单 + 周报</b> — 自动出账 + 邮件投递；每周趋势对比；额度 80% 自动预警</div></div>
+</div>
+
+<h2>计费（按词元）</h2>
+<div class="price-grid">
+<div class="price"><div class="h">输入</div><div class="v">¥2</div><div class="u">/ 百万词元</div></div>
+<div class="price"><div class="h">输出</div><div class="v">¥8</div><div class="u">/ 百万词元</div></div>
+<div class="price"><div class="h">数据</div><div class="v">¥20</div><div class="u">/ 百万词元</div></div>
+<div class="price"><div class="h">订阅</div><div class="v">¥3,900</div><div class="u">/ 年（含 2,000 万词元）</div></div>
+<div class="price"><div class="h">免费</div><div class="v">100 万</div><div class="u">首月体验词元</div></div>
+<div class="price"><div class="h">阶梯折扣</div><div class="v">3 档</div><div class="u">10 万 + 100 万 + 500 万</div></div>
+</div>
+
+<p>熔断保护：单次输入 >50K 词元自动拒绝；单日用量 >1M 词元预警。</p>
+
+<h2>主要 API 端点</h2>
+<div class="endpoints">
+<div class="row"><span class="method POST">POST</span> /api/auth/register — 注册客户获取 API Key（首月 100 万词元免费）</div>
+<div class="row"><span class="method POST">POST</span> /api/auth/recharge — 客户充值（管理员确认入账）</div>
+<div class="row"><span class="method GET">GET</span> /api/auth/usage — 查询词元用量</div>
+<div class="row"><span class="method POST">POST</span> /api/engine/analyze — 需求评估引擎（30 秒出 15 维卡）</div>
+<div class="row"><span class="method GET">GET</span> /api/knowledge-cards — 知识卡列表（15 维 × 8 行业）</div>
+<div class="row"><span class="method POST">POST</span> /api/neural/recommend — 神经能力推荐</div>
+<div class="row"><span class="method POST">POST</span> /api/neural/capabilities — 神经能力清单</div>
+<div class="row"><span class="method GET">GET</span> /api/packs — 能力包市场</div>
+<div class="row"><span class="method POST">POST</span> /api/assessment — 客户自评（结构化需求卡）</div>
+<div class="row"><span class="method POST">POST</span> /api/report/pdf — 评估报告 + PDF 生成</div>
+<div class="row"><span class="method GET">GET</span> /api/billing/prices — 计费价目</div>
+<div class="row"><span class="method POST">POST</span> /api/billing/quote — 询价</div>
+<div class="row"><span class="method GET">GET</span> /api/admin/overview — 运营总览（KPI）</div>
+<div class="row"><span class="method GET">GET</span> /api/admin/clients — 客户管理</div>
+<div class="row"><span class="method GET">GET</span> /api/admin/orders — 充值订单审核</div>
+</div>
+
+<h2>为什么选 ASH？</h2>
+<div class="grid2">
+<div class="card">
+<h4>中立</h4>
+<p>不绑定任何 LLM/向量库/训练框架。可对接 OpenAI / Claude / 智谱 / 通义 / 自研模型。</p>
+</div>
+<div class="card">
+<h4>合规</h4>
+<p>数据来源 license 全记录；隐私字段脱敏；GDPR/PDPA 兼容。</p>
+</div>
+<div class="card">
+<h4>透明</h4>
+<p>所有 API 公开（OpenAPI 文档 + 在线调试）；用量实时可见；月度账单可下载。</p>
+</div>
+<div class="card">
+<h4>自动化</h4>
+<p>4 个定时任务（备份/订单/周报/月账单）无人值守；7 邮件场景全自动触发。</p>
+</div>
+<div class="card">
+<h4>可试</h4>
+<p>5 场景动态演示 + 一键生成 API Key + 100 万词元免费，无需注册即可体验。</p>
+</div>
+<div class="card">
+<h4>可扩</h4>
+<p>30+ 公开 API + SDK（Node + Python）；私有部署一键打包。</p>
+</div>
+</div>
+
+<h2>开始使用</h2>
+<div class="grid2">
+<div class="card">
+<h4>🔍 看看示例</h4>
+<p><a href="app/seed-trail.html" style="color:var(--gold)">5 场景动态演示</a> — 不注册也能看效果</p>
+</div>
+<div class="card">
+<h4>📊 看实时数据</h4>
+<p><a href="app/dashboard.html" style="color:var(--gold)">运营看板</a> — 调用量/客户数/收入趋势</p>
+</div>
+<div class="card">
+<h4>📖 查 API 文档</h4>
+<p><a href="docs/" style="color:var(--gold)">完整文档</a> — OpenAPI + 错误码 + 接入指南</p>
+</div>
+<div class="card">
+<h4>🚀 立即接入</h4>
+<p><a href="https://sgmt-taojing.github.io/agent-training-standards/" style="color:var(--gold)">注册获取 API Key</a> — 首月 100 万词元免费</p>
+</div>
+</div>
+
+<div class="footer">
+<p>🌐 <a href="https://sgmt-taojing.github.io/agent-training-standards/">公网地址</a> · <a href="PRODUCT-INTRO.md">Markdown 版产品介绍</a> · <a href="docs/">文档中心</a></p>
+<p>ASH · Agent Standards Hub — 让训练智能体有章可循</p>
+</div>
+
+</div>
+</body>
+</html>

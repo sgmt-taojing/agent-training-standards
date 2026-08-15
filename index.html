@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Agent Standards Hub (ASH) — 智能体训练的中立公共标准与能力资产市场：从需求到上线的全流程规范">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"SoftwareApplication",
+      "name":"Agent Standards Hub",
+      "alternateName":"ASH",
+      "applicationCategory":"DeveloperApplication",
+      "operatingSystem":"Web",
+      "description":"智能体训练的 ISO 标准：11章训练规范+8大能力资产+15行业知识库+12维神经网络能力图谱",
+      "url":"https://sgmt-taojing.github.io/agent-training-standards/",
+      "offers":[
+        {"@type":"Offer","name":"按量付费","price":"0","priceCurrency":"CNY","description":"首月100万词元免费，输入¥2/百万，输出¥8/百万"},
+        {"@type":"Offer","name":"年度订阅","price":"3900","priceCurrency":"CNY","description":"含2000万词元/年，订阅额度优先扣，到期续费叠加"}
+      ],
+      "aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"12"},
+      "featureList":["11章训练规范","8大能力资产","15行业知识库","12维神经能力图谱","三重自进化环","PDF评估报告","Node.js/Python双语言SDK"]
+    },
+    {
+      "@type":"FAQPage",
+      "mainEntity":[
+        {"@type":"Question","name":"ASH 和普通训练框架有什么区别？","acceptedAnswer":{"@type":"Answer","text":"ASH 是中立公共标准与能力资产市场，不绑定任何技术栈或领域。提供 11 章全流程规范 + 8 大能力资产 + 12 维神经网络能力图谱，客户可按需获取。"}},
+        {"@type":"Question","name":"ASH 的计费方式是什么？","acceptedAnswer":{"@type":"Answer","text":"按词元计费。输入 ¥2/百万词元，输出 ¥8/百万词元，数据资产 ¥20/百万词元（一次性买断）。首月赠送 100 万词元免费额度。月耗 ≥1 亿词元享 9 折，≥5 亿享 8 折。"}},
+        {"@type":"Question","name":"如何订阅 ASH 年度套餐？","acceptedAnswer":{"@type":"Answer","text":"登录客户后台（/app/dashboard.html），点击「开通订阅 ¥3,900/年」按钮，从余额扣款成功后立即生效。订阅额度优先扣，免费额度次之，最后扣余额。"}},
+        {"@type":"Question","name":"ASH 有哪些 SDK？","acceptedAnswer":{"@type":"Answer","text":"提供 Node.js（/sdk/ash-client.js，零依赖 13 方法）和 Python（/sdk/ash_client.py，零依赖 13 方法）双语言 SDK。OpenAPI 规范见 /openapi.yaml。"}},
+        {"@type":"Question","name":"ASH 怎么自我进化？","acceptedAnswer":{"@type":"Answer","text":"三重进化环：信号（行业缺口/用量模式/版本一致）→ 提案 → 审批 → 落地 → 验证。每一轮进化都有审计日志，全链路可追溯。实战验证已迭代 4 轮。"}}
+      ]
+    },
+    {
+      "@type":"HowTo",
+      "name":"如何用 ASH 训练一个智能体（3步）",
+      "step":[
+        {"@type":"HowToStep","position":1,"name":"评估需求","text":"打开市场页，输入一句话需求（如「训练心理咨询陪伴智能体」），系统自动生成结构化需求卡 + 报价预估（免费）"},
+        {"@type":"HowToStep","position":2,"name":"下载评估报告","text":"基于需求卡一键生成 9 段式 PDF 评估报告，含行业识别/神经能力推荐/合规要求/词元报价/能力包匹配"},
+        {"@type":"HowToStep","position":3,"name":"注册并调用 API","text":"注册账号获取 API Key（首月 100 万词元免费），用 Node.js/Python SDK 或 curl 直接调用 /api/engine/analyze 开始消费"}
+      ]
+    }
+  ]
+}
+</script>
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://sgmt-taojing.github.io/agent-training-standards/">
+<title>Agent Standards Hub · 智能体训练规范中心</title>
+<style>
+  :root{
+    --bg:#0a0e1a; --bg2:#10162b; --card:#141b33; --line:#232c4d;
+    --txt:#e8ecf7; --sub:#9aa7c7; --gold:#d4af37; --gold2:#f0d67a;
+    --blue:#4f8cff; --green:#3ddc97; --red:#ff6b6b;
+    --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  /* ---------- Hero ---------- */
+  header{background:radial-gradient(1200px 500px at 50% -100px,#1b2a5e 0%,var(--bg) 60%);padding:64px 0 40px;text-align:center;border-bottom:1px solid var(--line)}
+  .badge{display:inline-block;padding:4px 14px;border:1px solid var(--gold);color:var(--gold2);border-radius:999px;font-size:13px;letter-spacing:2px;margin-bottom:18px}
+  h1{font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:1px}
+  h1 .gold{color:var(--gold2)}
+  .sub{margin-top:14px;color:var(--sub);font-size:clamp(14px,2.4vw,17px);max-width:720px;margin-left:auto;margin-right:auto}
+  .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .btn{display:inline-block;padding:12px 28px;border-radius:999px;text-decoration:none;font-weight:600;font-size:15px;transition:transform .15s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#141b33}
+  .btn-ghost{border:1px solid var(--line);color:var(--txt)}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold2)}
+  /* ---------- 规范章节 ---------- */
+  section{padding:44px 0;border-bottom:1px solid var(--line)}
+  .sec-title{font-size:24px;font-weight:700;margin-bottom:6px}
+  .sec-title .no{color:var(--gold);margin-right:10px}
+  .sec-desc{color:var(--sub);margin-bottom:22px;font-size:14px}
+  .ch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .ch-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;cursor:pointer;transition:border-color .2s}
+  .ch-card:hover{border-color:var(--gold)}
+  .ch-card h3{font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .ch-card p{font-size:13px;color:var(--sub)}
+  .ch-detail{display:none;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-top:12px;font-size:14px;white-space:pre-wrap;color:#c8d2ea;max-height:400px;overflow:auto}
+  .ch-detail.open{display:block}
+  .must{color:var(--gold2);font-weight:600}
+  /* ---------- 评估工具 ---------- */
+  .assess-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;margin-top:10px}
+  .form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:14px}
+  label{display:block;font-size:13px;color:var(--sub);margin-bottom:6px}
+  input,select,textarea{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:11px 14px;font-size:14px;font-family:inherit}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
+  textarea{min-height:90px;resize:vertical}
+  .assess-btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#141b33;font-size:16px;font-weight:700;cursor:pointer}
+  .assess-btn:disabled{opacity:.5;cursor:wait}
+  .result{margin-top:18px;display:none}
+  .result.show{display:block}
+  .result-item{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+  .result-item h4{font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .rel{color:var(--gold2);font-weight:700;white-space:nowrap}
+  .result-item .tags{font-size:12px;color:var(--sub);margin-top:4px}
+  .gap-box{background:#1c1626;border:1px solid #4a2f63;border-radius:12px;padding:14px 16px;margin-top:10px;font-size:13px;color:#cbb8e8}
+  .hint{font-size:12px;color:var(--sub);margin-top:10px}
+  .status{margin-top:12px;font-size:13px;color:var(--green);display:none}
+  /* ---------- 能力包 ---------- */
+  .pack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+  .pack{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:10px}
+  .pack .top{display:flex;justify-content:space-between;align-items:center}
+  .pack h3{font-size:16px}
+  .stars{color:var(--gold);font-size:12px;letter-spacing:1px}
+  .pack .dom{font-size:12px;color:var(--gold2);border:1px solid var(--gold);padding:2px 10px;border-radius:999px;align-self:flex-start}
+  .pack .meta{font-size:12px;color:var(--sub)}
+  .pack .bnd{font-size:12px;color:#9fe3c1;background:#0e2a1e;border-radius:8px;padding:8px 10px}
+  .pack .bnd b{color:var(--green)}
+  .pack .billing{margin-top:auto;font-size:13px;color:var(--blue);font-weight:600}
+  /* ---------- 定价 ---------- */
+  .price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .price{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;text-align:center}
+  .price.hot{border-color:var(--gold)}
+  .price h3{color:var(--gold2);font-size:15px;margin-bottom:8px}
+  .price .p{font-size:26px;font-weight:800}
+  .price .p small{font-size:13px;color:var(--sub);font-weight:400}
+  .price ul{list-style:none;font-size:13px;color:var(--sub);margin-top:10px;text-align:left}
+  .price li{padding:4px 0;border-bottom:1px dashed var(--line)}
+  /* ---------- 合规 ---------- */
+  .compliance{background:#1a1322;border:1px solid #4a2f63;border-radius:var(--radius);padding:22px}
+  .compliance li{margin:6px 0 6px 18px;font-size:13.5px;color:#cbb8e8}
+  footer{padding:36px 0;text-align:center;color:var(--sub);font-size:13px;border-top:1px solid var(--line)}
+  @media (max-width:480px){.wrap{padding:0 14px}section{padding:32px 0}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="badge">ASH v1.0 · 智能体训练规范中心</span>
+    <h1>Agent Standards Hub<br><span class="gold">智能体训练规范中心</span></h1>
+    <p class="sub">底层已有海量智能体与工作流。要训练自己的智能体，方方面面怎么做？<br>ASH 是智能体训练的公共标准制定者：<b>11 章全流程规范</b> + <b>8 大能力资产</b> + <b>15 行业知识库</b> + <b>12 维神经网络能力图谱</b>——训练方从零到一的完整基座。</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#assess">提交训练方向 · 免费评估</a>
+      <a class="btn btn-ghost" href="#standards">查看训练规范</a>
+      <a class="btn btn-ghost" href="#packs">浏览能力资产</a>
+    </div>
+    <div class="cta" style="margin-top:14px">
+      <a class="btn btn-ghost" href="/ash-intro.html" target="_blank" rel="noopener">📘 产品介绍</a>
+      <a class="btn btn-ghost" href="/dashboard" target="_blank" rel="noopener">🧑‍💼 客户后台</a>
+      <a class="btn btn-ghost" href="/app/seed-trail.html" target="_blank" rel="noopener">🎯 5 场景试用</a>
+      <a class="btn btn-ghost" href="/app/docs.html">📖 API 文档</a>
+      <a class="btn btn-ghost" href="/admin" target="_blank" rel="noopener">🛠 运营后台</a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════ 训练规范 10 章 ═══════ -->
+<section id="standards">
+  <div class="wrap">
+    <h2 class="sec-title"><span class="no">01</span>训练规范 · 全流程 10 章</h2>
+    <p class="sec-desc">领域无关的中立标准。训练任何智能体，按此 10 章走完全程。点击章节查看核心规范。</p>
+    <div class="ch-grid" id="chGrid"></div>
+    <div id="chDetail" class="ch-detail"></div>
+    <p class="hint" style="margin-top:14px">📄 完整规范文档（含全部检查清单与模板）可在页面底部「获取规范」下载。</p>
+  </div>
+</section>
+
+<!-- ═══════ 需求评估 ═══════ -->
+<section id="assess">
+  <div class="wrap">
+    <h2 class="sec-title"><span class="no">02</span>训练需求评估（免费）</h2>
+    <p class="sec-desc">告诉我们你的训练方向，自动输出：规范重点章节建议 + 配套能力资产匹配 + 计费模式推荐。</p>
+    <div class="assess-box">
+      <div class="form-row">
+        <div>
+          <label for="q">训练方向描述（必填）</label>
+          <textarea id="q" maxlength="2000" placeholder="例：我想训练一个面向企业客服的智能体，需要多轮对话、工单分类、知识库问答，能处理复杂售后场景"></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label for="industry">目标行业</label>
+          <input id="industry" maxlength="60" placeholder="例：企业服务 / 医疗健康 / 教育">
+        </div>
+        <div>
+          <label for="target">目标形态</label>
+          <select id="target">
+            <option value="对话助手">对话助手（问答/客服）</option>
+            <option value="行业专家">行业专家（垂直领域深度）</option>
+            <option value="业务集成">业务自动化（工具调用/工作流）</option>
+            <option value="模型微调">模型微调（基座二次训练）</option>
+          </select>
+        </div>
+        <div>
+          <label for="contact">联系方式（选填）</label>
+          <input id="contact" maxlength="200" placeholder="微信 / 手机 / 邮箱">
+        </div>
+      </div>
+      <button class="assess-btn" id="assessBtn">🚀 开始评估</button>
+      <div class="status" id="status"></div>
+      <div class="result" id="result"></div>
+      <p class="hint">评估结果由匹配引擎实时计算；提交后需求进入线索库，销售 1 个工作日内跟进。不填写联系方式也可直接查看评估结果。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 公共能力资产 ═══════ -->
+<section id="packs">
+  <div class="wrap">
+    <h2 class="sec-title"><span class="no">03</span>公共能力资产（中立配套）</h2>
+    <p class="sec-desc">规范执行所需的通用能力资产：数据工具、技能包、API。领域知识包按需选购，非强制。</p>
+    <div class="pack-grid" id="packGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════ 定价 ═══════ -->
+<section id="pricing">
+  <div class="wrap">
+    <h2 class="sec-title"><span class="no">04</span>计费标准（词元制 · token-based）</h2>
+    <p class="sec-desc">统一按词元计量——行业通用口径，透明可比较。充值即用，首月 100 万词元免费试用。</p>
+    <div class="price-grid">
+      <div class="price hot">
+        <h3>输入词元</h3>
+        <div class="p">¥2<small>/百万 token</small></div>
+        <ul><li>请求内容 / 上下文</li><li>知识库检索输入</li><li>工具调用入参</li></ul>
+      </div>
+      <div class="price hot">
+        <h3>输出词元</h3>
+        <div class="p">¥8<small>/百万 token</small></div>
+        <ul><li>生成 / 推理结果</li><li>报告输出</li><li>评估反馈</li></ul>
+      </div>
+      <div class="price">
+        <h3>数据资产</h3>
+        <div class="p">¥20<small>/百万词元</small></div>
+        <ul><li>训练语料一次性买断</li><li>授权范围内引用</li><li>专业领域系数 1.5</li></ul>
+      </div>
+      <div class="price">
+        <h3>技能包订阅</h3>
+        <div class="p">¥3,900<small>/年</small></div>
+        <ul><li>含 2,000 万词元配额</li><li>超配额按量计</li><li>持续升级进化</li></ul>
+      </div>
+    </div>
+    <div class="price-grid" style="margin-top:14px">
+      <div class="price"><h3>免费试用</h3><div class="p">100万<small>词元/首月</small></div><ul><li>新客户自动发放</li><li>评估工具永久免费</li></ul></div>
+      <div class="price"><h3>阶梯折扣</h3><div class="p">9折 / 8折</div><ul><li>月耗 ≥1亿词元 9 折</li><li>月耗 ≥5亿词元 8 折</li></ul></div>
+      <div class="price"><h3>预付费</h3><div class="p">¥500<small>起充</small></div><ul><li>余额不足自动熔断</li><li>升级提醒后恢复</li></ul></div>
+      <div class="price"><h3>计量口径</h3><div class="p">1.5字<small>/token</small></div><ul><li>中文约 1.5 字符/token</li><li>服务端统一计量</li><li>按日对账可查</li></ul></div>
+    </div>
+    <p class="hint" style="margin-top:14px">费用 = 输入词元 × ¥2/百万 + 输出词元 × ¥8/百万；数据资产 = 包词元总量 × ¥20/百万 × 领域系数。</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:16px">
+      <div style="padding:16px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,0.02)">
+        <div style="font-weight:700;font-size:14px">按量付费（弹性）</div>
+        <div style="font-size:26px;font-weight:800;color:var(--gold);margin:6px 0">¥0 起</div>
+        <div style="font-size:12px;color:var(--dim);line-height:1.8">首月 100 万词元免费<br>输入 ¥2/百万 · 输出 ¥8/百万<br>随用随付 · 阶梯 9 折/8 折</div>
+      </div>
+      <div style="padding:16px;border:1px solid var(--gold);border-radius:10px;background:rgba(212,175,55,0.06);position:relative">
+        <div style="position:absolute;top:10px;right:12px;font-size:10px;background:var(--gold);color:#0a0e1a;padding:2px 8px;border-radius:10px;font-weight:700">推荐</div>
+        <div style="font-weight:700;font-size:14px">年度订阅（Pro）</div>
+        <div style="font-size:26px;font-weight:800;color:var(--gold);margin:6px 0">¥3,900<span style="font-size:12px;color:var(--dim)">/年</span></div>
+        <div style="font-size:12px;color:var(--dim);line-height:1.8">含 2,000 万词元（≈¥7,000 价值）<br>订阅额度优先扣 · 到期续费叠加<br>适合高频调用团队</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 边界与合规 ═══════ -->
+<section id="compliance">
+  <div class="wrap">
+    <h2 class="sec-title"><span class="no">05</span>边界与合规（红线）</h2>
+    <div class="compliance">
+      <ul>
+        <li><b>中立承诺</b>：训练规范为公共标准，领域无关；能力资产按需选购，不捆绑、不倾向。</li>
+        <li><b>能力边界</b>：每个能力资产明示「能做什么 / 不能做什么 / 客户需自备 / 合规限制」，签约前逐条确认，防过度承诺。</li>
+        <li><b>数据红线</b>：资产仅含自有与授权内容；外部蒸馏限开源协议（MIT/Apache/BSD/GPL）、公开论文与官方文档、可商用开源模型；禁止付费墙内容与违规爬取。</li>
+        <li><b>行业边界</b>：医疗健康不替代执业医师、输出挂免责声明、诊疗类须人工/医生审核；金融不承诺收益；不提供投资/法律决策。</li>
+        <li><b>隐私安全</b>：用户数据四级脱敏；生物特征匿名化；未成年人数据单独保护；密钥 Keychain 托管 + 90 天轮换。</li>
+        <li><b>违约处置</b>：超边界使用 / 转售数据 / 绕过鉴权 → 立即终止授权并追责；终止后 30 天内销毁数据副本。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 获取规范 ═══════ -->
+<section id="download">
+  <div class="wrap" style="text-align:center">
+    <h2 class="sec-title" style="justify-content:center"><span class="no">06</span>获取完整规范文档</h2>
+    <p class="sec-desc" style="max-width:640px;margin-left:auto;margin-right:auto">《智能体训练全流程规范》含 10 章全部检查清单、门槛值、交付物模板索引——训练团队的执行蓝本。</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="standards/AGENT-TRAINING-STANDARDS.md" download>⬇ 下载规范（Markdown）</a>
+      <a class="btn btn-ghost" href="#assess">提交需求 · 获取配套评估</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Agent Standards Hub (ASH) v1.0 · 智能体训练规范中心 | 公共标准 · 资产自动进化</p>
+    <p style="margin-top:6px">© 2026 Agent Standards Hub (ASH) · 本规范与资产均受边界与合规条款约束</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  /* ---------- 内嵌兜底数据（fetch 失败时使用，与注册表保持同一结构） ---------- */
+  var FALLBACK_PACKS = [
+    {id:"mingli-knowledge-pack",name:"命理知识能力包",domain:"mingli",version:"1.0.0",maturity:5,keywords:["八字","紫微","奇门","六爻","六壬","梅花","风水","合婚","起名","五行","易经","命理","排盘","化解","流年","大运"],summary:"KB 25,997+ 条 · 7 术数排盘引擎 · 化解/报告引擎",boundaryCapable:"排盘计算、命理解读报告、化解方案、吉日推荐、KB 检索",billing:"D 混合制"},
+    {id:"tcm-knowledge-pack",name:"中医医学能力包",domain:"tcm",version:"1.0.0",maturity:4,keywords:["中医","伤寒","金匮","方剂","针灸","穴位","辨证","四诊","舌诊","脉诊","经方","中药","倪海厦","问诊","体质"],summary:"KB 13,128+ 条 · 辨证引擎 · 方剂/穴位检索",boundaryCapable:"中医知识检索、智能辨证、方剂/穴位推荐、相似案例、问诊结构化",billing:"D 混合制"},
+    {id:"vision-diagnosis-pack",name:"AI 视觉诊疗能力包",domain:"vision",version:"1.0.0",maturity:3,keywords:["面诊","舌诊","眼诊","手诊","摄像头","ONNX","视觉识别","特征提取","图像分析","拍照诊断"],summary:"面/舌/眼/手 ONNX 74 模型 · 特征→KB 匹配 30ms · 离线兜底",boundaryCapable:"四诊特征识别、特征→KB 辨证匹配、拍照可追溯、离线兜底",billing:"D 混合制"},
+    {id:"hci-super-species-pack",name:"人机交互能力包",domain:"hci",version:"1.0.0",maturity:4,keywords:["交互","界面","体验","零学习成本","傻瓜式","无障碍","个性化","情感化","主题","家庭成员","HCI","UI","UX"],summary:"零学习成本规范 · 个性化配置 · 无障碍巡检",boundaryCapable:"零学习成本交互规范、个性化配置、无障碍合规巡检",billing:"A 订阅制"},
+    {id:"training-pipeline-pack",name:"训练体系能力包",domain:"training",version:"1.0.0",maturity:4,keywords:["训练","SFT","DPO","微调","蒸馏","ChatML","评估","反馈","数据生成","合规","语料"],summary:"SFT 711 + DPO 40 · 蒸馏引擎 · ChatML 转换 · 合规扫描",boundaryCapable:"SFT/DPO 数据生成、知识蒸馏、ChatML 转换、合规扫描、周评估",billing:"D 混合制"},
+    {id:"agent-orchestration-pack",name:"智能体编排能力包",domain:"agent",version:"1.0.0",maturity:4,keywords:["智能体","编排","调度","自进化","agent","多模块联动","记忆","KB优先","工具调用","工作流"],summary:"agent 调度 · KB 优先三级分级 · 自进化环",boundaryCapable:"Plan→Do→Check→Act 闭环、KB 优先分级、终身记忆、多模块联动",billing:"A 订阅制"},
+    {id:"requirement-engine-pack",name:"需求评估引擎能力包",domain:"engine",version:"1.0.0",maturity:4,keywords:["需求","评估","行业","知识库","匹配","报价","需求分析","需求卡","训练方向","咨询"],summary:"12 行业知识库 · 需求卡输出 · 合规检测 · 报价预估",boundaryCapable:"行业识别、合规触发检测、规范路径建议、能力包匹配、词元报价",billing:"免费评估 · API 按词元"},
+    {id:"neural-capability-pack",name:"神经网络主流能力图谱",domain:"neural",version:"1.0.0",maturity:4,keywords:["RAG","LoRA","QLoRA","SFT","DPO","微调","多模态","强化学习","Agent RL","Function Calling","Multi-Agent","GraphRAG"],summary:"12 维度能力选型 · 决策框架 · ICLR 2026 前沿",boundaryCapable:"能力选型建议、决策框架、门槛引用、行业适配",billing:"免费图谱 · 深度咨询项目制"}
+  ];
+
+  /* ---------- 规范章节数据（中立，公共标准） ---------- */
+  var CHAPTERS = [
+    {no:1,t:"需求定义",d:"训练目标声明 TGS、能力边界、场景清单、成功标准",k:"目标声明必须可量化；边界声明可被评测集逐条验证"},
+    {no:2,t:"数据规范",d:"来源白名单、清洗流水线、标注质检、分布设计、规模基线",k:"来源合规审计；边界样本≥20%；单领域问答≥5,000 条起步；蒸馏 trust≥0.7"},
+    {no:3,t:"训练规范",d:"基座选型、ChatML 格式、分阶段 SFT→DPO→持续学习、可复现",k:"固定种子记录超参；禁止测试集参与训练；训练卡完整才可评估"},
+    {no:4,t:"评估规范",d:"评测集五类分布、核心指标门槛、回归测试、A/B 对比",k:"准确率≥85%；拒答率≥95%；幻觉率≤3%；越狱=0；发布前全量回归"},
+    {no:5,t:"上线规范",d:"鉴权限流熔断、灰度发布、监控告警、回滚预案、降级兜底",k:"灰度 5%→100%；一键回滚；模型不可用必须友好兜底，禁止静默失败"},
+    {no:6,t:"运营进化",d:"反馈闭环、使用日志回流、semver 版本、持续蒸馏、季度报告",k:"无使用数据/反馈禁止空转发版；增量训练每月≤1 次防遗忘"},
+    {no:7,t:"安全合规",d:"内容红线、隐私四级脱敏、行业边界、提示词安全、密钥管理",k:"7 大禁止标签归零；医疗/金融免责声明；密钥 90 天轮换"},
+    {no:8,t:"流程协作",d:"角色分工、阶段门禁、文档规范、迭代节奏、知识沉淀",k:"评测必须独立于训练；每阶段验收通过才放行（PDCA 闭环）"},
+    {no:9,t:"交付物清单",d:"六个阶段各自必须交出的产物",k:"需求→TGS；数据→合规报告；训练→训练卡；评测→报告；上线→检查单；运营→进化报告"},
+    {no:10,t:"能力资产索引",d:"规范执行可配套的公共能力资产",k:"中立选购、不捆绑；领域知识包为可选项"}
+  ];
+
+  var el = function(id){ return document.getElementById(id); };
+
+  /* ---------- 渲染规范章节 ---------- */
+  function renderChapters(){
+    var grid = el('chGrid');
+    CHAPTERS.forEach(function(c){
+      var card = document.createElement('div');
+      card.className = 'ch-card';
+      card.setAttribute('role','button');
+      card.setAttribute('tabindex','0');
+      card.setAttribute('aria-label','第'+c.no+'章 '+c.t);
+      card.innerHTML = '<h3><span style="color:var(--gold)">0'+c.no+'</span>'+c.t+'</h3><p>'+c.d+'</p>';
+      card.addEventListener('click', function(){ showChapter(c); });
+      card.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); showChapter(c); } });
+      grid.appendChild(card);
+    });
+  }
+  function showChapter(c){
+    var det = el('chDetail');
+    det.classList.add('open');
+    det.innerHTML = '<b style="color:var(--gold2)">第 '+c.no+' 章 · '+c.t+'</b>\n\n'+c.d+'\n\n【核心硬规则】\n'+c.k+'\n\n完整检查清单见《智能体训练全流程规范》文档（页尾下载）。';
+  }
+
+  /* ---------- 渲染能力包 ---------- */
+  function renderPacks(packs){
+    var grid = el('packGrid');
+    grid.innerHTML = '';
+    packs.forEach(function(p){
+      var card = document.createElement('div');
+      card.className = 'pack';
+      var stars = '';
+      for(var i=0;i<5;i++){ stars += (i < p.maturity ? '★' : '☆'); }
+      card.innerHTML =
+        '<div class="top"><h3>'+p.name+'</h3><span class="stars">'+stars+'</span></div>'+
+        '<span class="dom">'+p.domain.toUpperCase()+' · v'+p.version+'</span>'+
+        '<div class="meta">'+p.summary+'</div>'+
+        '<div class="bnd"><b>可提供：</b>'+p.boundaryCapable+'</div>'+
+        '<div class="billing">推荐获取：'+p.billing+'</div>'+
+        '<div style="margin-top:8px;font-size:12px;color:var(--blue);cursor:pointer" data-expand="1">📖 展开 15 维全维度知识卡 ▾</div>'+
+        '<div class="kc-detail" style="display:none;margin-top:10px;font-size:12px;color:#c8d2ea;border-top:1px dashed var(--line);padding-top:10px"></div>';
+      card.querySelector('[data-expand]').addEventListener('click', function(e){
+        e.stopPropagation();
+        var det = card.querySelector('.kc-detail');
+        if(det.style.display === 'none'){
+          det.style.display = 'block';
+          det.innerHTML = '⏳ 加载知识卡…';
+          loadKnowledgeCard(p.id, det);
+        } else { det.style.display = 'none'; }
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  /* ---------- 需求评估（与官方匹配引擎同逻辑） ---------- */
+  function scorePack(pack, text){
+    var kws = pack.keywords || [];
+    var hitW = 0, totalW = 0, hits = [], missed = [];
+    kws.forEach(function(kw){
+      var w = kw.length >= 4 ? 2 : 1;
+      totalW += w;
+      if(text.indexOf(kw) > -1){ hitW += w; hits.push(kw); } else { missed.push(kw); }
+    });
+    var coverage = totalW === 0 ? 0 : Math.round(hitW / totalW * 100);
+    return { coverage: coverage, hits: hits, missed: missed };
+  }
+  function assess(query, packs){
+    var results = packs.map(function(p){
+      var s = scorePack(p, query);
+      return { packId: p.id, packName: p.name, coverage: s.coverage, hits: s.hits, missed: s.missed.slice(0,8), billing: p.billing };
+    }).filter(function(r){ return r.coverage > 0; })
+      .sort(function(a,b){ return b.coverage - a.coverage; });
+    var top = results.slice(0,3);
+    var gaps = [];
+    top.forEach(function(r){ r.missed.forEach(function(g){ if(gaps.indexOf(g)===-1) gaps.push(g); }); });
+    return { results: results, gaps: gaps };
+  }
+  /* 目标形态 → 规范重点章节（中立映射） */
+  function chapterAdvice(target){
+    var map = {
+      '对话助手':  '重点章节：2 数据规范 · 4 评估规范 · 5 上线规范',
+      '行业专家':  '重点章节：2 数据规范（蒸馏/领域语料）· 3 训练规范 · 4 评估规范',
+      '业务集成':  '重点章节：5 上线规范 · 7 安全合规（工具调用权限最小化）· 6 运营进化',
+      '模型微调':  '重点章节：3 训练规范 · 2 数据规范 · 4 评估规范（回归测试）'
+    };
+    return map[target] || '按规范 10 章全流程执行';
+  }
+
+  function renderResult(rep, q, target){
+    var box = el('result');
+    var html = '<div class="status" style="display:block;color:var(--green)">✅ 评估完成'+(rep.id ? ' · 需求编号 '+rep.id+'（已进入线索库）' : ' · 本地评估模式')+'</div>';
+    html += '<div class="result-item" style="border-color:var(--gold)"><h4>📐 规范路径建议</h4><div class="tags">'+chapterAdvice(target)+'</div><div class="tags" style="margin-top:4px">需求：'+q.slice(0,80)+(q.length>80?'…':'')+'</div></div>';
+    if(rep.results.length === 0){
+      html += '<div class="gap-box">未匹配到现成能力资产。建议：补充领域关键词后重试，或走人工定制评估（联系我们）。</div>';
+    } else {
+      rep.results.forEach(function(r,i){
+        html += '<div class="result-item"><h4>'+(i+1)+'. '+r.packName+' <span class="rel">相关度 '+r.coverage+'%</span></h4><div class="tags">命中：'+(r.hits.join('、')||'—')+'</div><div class="tags">推荐获取：'+r.billing+'</div></div>';
+      });
+    }
+    if(rep.gaps && rep.gaps.length){
+      html += '<div class="gap-box">🔧 缺口提示（需定制或自建）：'+rep.gaps.slice(0,6).join('、')+'</div>';
+    }
+    html += '<p class="hint">边界与合规确认将在正式评估报告中逐条列出（能/不能/自备/合规），详见《需求评估报告模板》。</p>';
+    appendQuote(q, box);
+    box.innerHTML = html;
+    box.classList.add('show');
+  }
+
+  /* ---------- 提交评估（服务端优先，失败降级本地） ---------- */
+  function submitAssess(){
+    var q = el('q').value.trim();
+    var industry = el('industry').value.trim();
+    var target = el('target').value;
+    var contact = el('contact').value.trim();
+    var btn = el('assessBtn');
+    var status = el('status');
+
+    if(!q){ status.textContent = '⚠️ 请先填写训练方向描述'; status.style.color = '#ff6b6b'; status.style.display = 'block'; return; }
+    if(q.length > 2000){ status.textContent = '⚠️ 描述超过 2000 字上限'; status.style.display = 'block'; return; }
+
+    btn.disabled = true;
+    btn.textContent = '评估中…';
+    status.style.display = 'none';
+
+    var localResult = assess(q, window.__PACKS__ || FALLBACK_PACKS);
+
+    var payload = JSON.stringify({ query: q, industry: industry, target: target, contact: contact });
+
+    fetch('/api/engine/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: payload
+    }).then(function(resp){
+      if(!resp.ok) throw new Error('HTTP '+resp.status);
+      return resp.json();
+    }).then(function(data){
+      if(data.card){ renderCard(data.card, data.id); }
+      else { renderResult({ id: data.id, results: data.report ? data.report.matches : [], gaps: [] }, q, target); }
+    }).catch(function(){
+      /* 降级：本地评估 + localStorage 暂存 */
+      try {
+        var list = JSON.parse(localStorage.getItem('_cap_market_reqs') || '[]');
+        list.push({ t: new Date().toISOString(), q: q.slice(0,200), target: target });
+        if(list.length > 50) list = list.slice(-50);
+        localStorage.setItem('_cap_market_reqs', JSON.stringify(list));
+      } catch(e){ /* 存储不可用时忽略 */ }
+      renderResult({ results: localResult.results, gaps: localResult.gaps }, q, target);
+    }).finally(function(){
+      btn.disabled = false;
+      btn.textContent = '🚀 开始评估';
+    });
+  }
+
+  /* ---------- 初始化 ---------- */
+  /* ---------- 全维度知识卡加载 ---------- */
+  function loadKnowledgeCard(packId, el){
+    function render(card){
+      var dims = [
+        ['定义', card.definition], ['价值', card.value], ['资产', card.contents],
+        ['使用规范', card.usage], ['训练规范', card.training], ['交互规范', card.interaction],
+        ['合规规范', card.compliance], ['质量规范', card.quality], ['安全规范', card.security],
+        ['运营规范', card.operations], ['商业规范', card.business], ['行业适配', card.industry],
+        ['路线图', card.roadmap]
+      ];
+      var html = '';
+      dims.forEach(function(d){
+        if(d[1]) html += '<div style="margin:6px 0"><b style="color:var(--gold2)">'+d[0]+'</b><br>'+d[1]+'</div>';
+      });
+      if(card.boundary){
+        html += '<div style="margin:6px 0"><b style="color:var(--gold2)">边界声明</b><br>✅ 能：'+(card.boundary.capable||[]).join('、')+'<br>❌ 不能：'+(card.boundary.incapable||[]).join('、')+'<br>🔧 客户自备：'+(card.boundary.requires||[]).join('、')+'</div>';
+      }
+      el.innerHTML = html;
+    }
+    function fallback(){
+      var fb = FALLBACK_PACKS.filter(function(x){ return x.id === packId; })[0];
+      el.innerHTML = fb ? '<b style="color:var(--gold2)">定义</b><br>'+(fb.summary||'')+'<br><b style="color:var(--gold2)">可提供</b><br>'+(fb.boundaryCapable||'') : '知识卡暂不可用（本地服务可查看完整 15 维）';
+    }
+    try {
+      fetch('/api/knowledge-card/'+packId).then(function(r){ return r.json(); }).then(function(d){
+        if(d.ok && d.card){ render(d.card); } else { throw new Error('no card'); }
+      }).catch(function(){
+        fetch('/knowledge-cards/'+packId+'.json').then(function(r){ return r.json(); }).then(function(c){
+          if(c && c.identity){ render(c); } else { fallback(); }
+        }).catch(fallback);
+      });
+    } catch(e){ fallback(); }
+  }
+
+  /* ---------- 需求卡渲染（需求引擎输出） ---------- */
+  function renderCard(card, id){
+    var box = el('result');
+    var html = '<div class="status" style="display:block;color:var(--green)">✅ 需求分析完成'+(id?' · 需求编号 '+id+'（已进入线索库）':'')+'</div>';
+    html += '<div class="result-item" style="border-color:var(--gold)">'+
+      '<h4>🏭 行业识别：'+card.industry.name+' <span class="rel" style="font-size:12px">'+card.taskType+'</span></h4>'+
+      '<div class="tags">典型场景：'+(card.typicalScenes||[]).join('、')+'</div>'+
+      '<div class="tags">数据规模：'+(card.dataVolume||'—')+'</div></div>';
+    if(card.complianceFlags && card.complianceFlags.length){
+      html += '<div class="gap-box" style="border-color:#4a2f63">⚠️ 合规要求（'+card.complianceFlags.length+' 项，签约前逐条确认）：<br>• '+
+        card.complianceFlags.map(function(f){return f.text;}).join('<br>• ')+'</div>';
+    }
+    html += '<div class="result-item"><h4>📐 规范路径建议</h4>'+
+      '<div class="tags">'+card.standardPath.focus+'</div>'+
+      '<div class="tags">评测重点：'+(card.standardPath.evalFocus||[]).join('、')+'</div>'+
+      (card.standardPath.industryNote ? '<div class="tags" style="color:#9fe3c1">行业提示：'+card.standardPath.industryNote+'</div>' : '')+'</div>';
+    (card.packs||[]).forEach(function(p,i){
+      html += '<div class="result-item"><h4>'+(i+1)+'. '+p.packName+' <span class="rel">相关度 '+p.coverage+'%</span></h4>'+
+        '<div class="tags">命中：'+(p.hits||[]).join('、')+'</div></div>';
+    });
+    if(card.industryPacks && card.industryPacks.length){
+      html += '<div class="result-item" style="border-color:var(--line)"><h4>🏅 行业知识库推荐</h4><div class="tags">'+
+        card.industryPacks.map(function(p){return p.packName;}).join('、')+'（'+card.industryPacks[0].source+'）</div></div>';
+    }
+    if(card.gaps && card.gaps.length){
+      html += '<div class="gap-box">🔧 缺口提示（需定制/自建）：'+card.gaps.slice(0,6).join('、')+'</div>';
+    }
+    if(card.quote && card.quote.estimate){
+      var e = card.quote.estimate;
+      html += '<div class="result-item" style="border-color:#4f8cff"><h4>💰 词元制报价预估 <span class="rel">月估 ¥'+(e.callCostYuan||0).toLocaleString()+'</span></h4>'+
+        '<div class="tags">按 1 万次调用/月：调用 ¥'+(e.callCostYuan||0).toLocaleString()+' · 数据资产 ¥'+(e.dataCostYuan||0).toLocaleString()+' · 合计 ¥'+(e.totalYuan||0).toLocaleString()+'</div>'+
+        '<div class="tags">'+card.quote.note+'</div></div>';
+    }
+    html += '<p class="hint">边界与合规确认将在正式评估报告中逐条列出，详见《需求评估报告模板》。</p>';
+    html += '<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">'+
+      '<button class="btn btn-primary" style="border:none;font-size:13px;padding:10px 18px" onclick="downloadReport(\'md\')">📄 下载评估报告 (MD)</button>'+
+      '<button class="btn btn-ghost" style="font-size:13px;padding:10px 18px" onclick="downloadReport(\'pdf\')">📕 生成 PDF 报告</button>'+
+      '</div>';
+    box.innerHTML = html;
+    box.classList.add('show');
+    window.__lastQuery = q;
+    window.__lastTarget = target;
+    window.__lastIndustry = industry;
+  }
+  /* ---------- 评估报告下载 ---------- */
+  function downloadReport(fmt){
+    var btn = document.querySelector('.assess-btn');
+    try {
+      var q = window.__lastQuery || '';
+      if(!q){ return; }
+      var status = document.getElementById('status');
+      status.style.display = 'block';
+      status.textContent = fmt === 'pdf' ? '⏳ 正在生成 PDF（约 5 秒）…' : '⏳ 正在生成报告…';
+      fetch('/api/report/pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q, industry: window.__lastIndustry || '', target: window.__lastTarget || '对话助手' })
+      }).then(function(r){ return r.json(); }).then(function(d){
+        if(!d.ok){ status.textContent = '⚠️ ' + (d.error || '生成失败'); return; }
+        if(fmt === 'md'){
+          window.open(d.downloadMd, '_blank');
+          status.textContent = '✅ 报告已生成，正在下载…';
+        } else {
+          // PDF 需等生成完成，轮询下载
+          var tries = 0;
+          var timer = setInterval(function(){
+            tries++;
+            var a = document.createElement('a');
+            a.href = d.downloadPdf;
+            a.download = 'ASH-评估报告.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            status.textContent = '✅ PDF 已触发下载（如未成功请稍候重试）';
+            clearInterval(timer);
+          }, 6000);
+        }
+      }).catch(function(){
+        status.textContent = '⚠️ 报告服务不可用（本地部署模式），请复制需求卡内容';
+      });
+    } catch(e){
+      var st = document.getElementById('status');
+      st.style.display = 'block';
+      st.textContent = '⚠️ 下载暂不可用';
+    }
+  }
+
+  /* ---------- 词元报价预估 ---------- */
+  function appendQuote(q, box){
+    try {
+      fetch('/api/billing/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q, monthlyCalls: 10000 })
+      }).then(function(r){ return r.json(); }).then(function(d){
+        if(d.ok && d.quote){
+          var est = d.quote.estimate;
+          var card = document.createElement('div');
+          card.className = 'result-item';
+          card.style.borderColor = '#4f8cff';
+          card.innerHTML = '<h4>💰 词元制报价预估 <span class="rel">月估 ¥'+(est.callCostYuan||0).toLocaleString()+'</span></h4>' +
+            '<div class="tags">按 1 万次调用/月估算（输入 ¥2 + 输出 ¥8 每百万词元）</div>' +
+            '<div class="tags">数据资产（如需训练语料）：¥'+(est.dataCostYuan||0).toLocaleString()+'（一次性）</div>' +
+            '<div class="tags">'+d.quote.note+'</div>';
+          box.appendChild(card);
+        }
+      }).catch(function(){});
+    } catch(e){ /* 报价降级：不阻塞结果展示 */ }
+  }
+
+  function init(){
+    renderChapters();
+    fetch('/api/packs').then(function(r){ return r.json(); }).then(function(reg){
+      if(reg && Array.isArray(reg.packs)){
+        window.__PACKS__ = reg.packs.map(function(p){
+          var layers = p.layers || {};
+          var summary = [];
+          if(layers.L1_data && layers.L1_data.kbEntries) summary.push('KB '+layers.L1_data.kbEntries.toLocaleString()+'+ 条');
+          if(layers.L1_data && layers.L1_data.models) summary.push(layers.L1_data.models+' 模型');
+          if(layers.L3_api) summary.push((layers.L3_api.endpoints||[]).length+' API');
+          return {
+            id: p.id, name: p.name, domain: p.domain, version: p.version, maturity: p.maturity,
+            keywords: p.keywords,
+            summary: summary.join(' · ') || '公共能力资产',
+            boundaryCapable: (p.boundary && p.boundary.capable || []).slice(0,3).join('、'),
+            billing: 'D 混合制'
+          };
+        });
+        renderPacks(window.__PACKS__);
+      } else { renderPacks(FALLBACK_PACKS); }
+    }).catch(function(){ renderPacks(FALLBACK_PACKS); });
+
+    el('assessBtn').addEventListener('click', submitAssess);
+    el('q').addEventListener('keydown', function(e){
+      if((e.ctrlKey || e.metaKey) && e.key === 'Enter') submitAssess();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+<div style="max-width:680px;margin:20px auto;padding:16px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.25);border-radius:10px">
+<h3 style="color:var(--gold);margin-bottom:8px">🚀 立即开始</h3>
+<p style="font-size:13px;color:var(--dim);margin-bottom:10px">注册获取 API Key，首月赠送 100 万词元免费额度。</p>
+<a href="/ash-intro.html" target="_blank" style="color:var(--gold)">📘 产品介绍</a> · <a href="/dashboard" target="_blank" style="color:var(--gold)">客户后台</a> · <a href="/app/seed-trail.html" target="_blank" style="color:var(--gold)">5 场景试用</a> · <a href="/app/docs.html" style="color:var(--gold)">API 文档</a> · <a href="/admin" target="_blank" style="color:var(--gold)">运营后台</a><br>
+          <span style="font-size:12px;color:var(--dim)">SDK：<a href="/sdk/ash-client.js" style="color:var(--gold)">Node.js</a> · <a href="/sdk/ash_client.py" style="color:var(--gold)">Python</a> · <a href="/openapi.yaml" style="color:var(--gold)">OpenAPI</a></span>
+</div>
+</body>
+</html>

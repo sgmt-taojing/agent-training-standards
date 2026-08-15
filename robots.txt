@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Allow: /app/docs.html
+Allow: /app/dashboard.html
+Disallow: /app/admin.html
+Sitemap: https://sgmt-taojing.github.io/agent-training-standards/sitemap.xml

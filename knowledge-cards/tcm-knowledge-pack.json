@@ -1,0 +1,61 @@
+{
+  "schema": "knowledge-card/v1",
+  "generatedAt": "2026-08-10T14:20:44.982Z",
+  "identity": {
+    "packId": "tcm-knowledge-pack",
+    "name": "中医医学能力包",
+    "domain": "tcm",
+    "version": "1.1.0",
+    "maturity": 4,
+    "source": [
+      "tcm-agent",
+      "nihaisha-nishi-tcm",
+      "tcm-diagnosis"
+    ]
+  },
+  "definition": "中医医学公共能力：13,128 条权威 KB（伤寒/金匮/方剂/针灸/辨证）+ 辨证引擎 + 方剂穴位检索，供中医类智能体训练与调用。",
+  "value": "解决中医智能体「医学知识权威源」问题：伤寒金匮经方体系标准化、辨证八纲六经结构化；适合中医科普、预问诊、教学辅助、健康管理（非诊疗）。",
+  "contents": "L1: KB 13,128+ 条；L2: nihaisha 技能（倪海厦课程知识）；L3: /api/tcm/kb、/api/tcm/diagnose、/api/tcm/inquiry、/api/tcm/formula/search、/api/tcm/acupoint/search、/api/tcm/cases/similar。",
+  "usage": "接入三步：① 申请 Key ② 调 /api/tcm/diagnose 辨证（输入四诊信息）③ 输出方剂/穴位建议（必须挂医疗免责 + 人工审核标记）；最佳实践：诊疗类输出一律走后台医生审核流（互联网医院模式）。",
+  "training": "引用本包训练：语料需专家标注（中医术语一致性）；评测集双集：知识正确性（对照《伤寒论》原文）≥95% + 诊疗边界拒答 100%（非适应症必须拒答）；禁止用未经审核的 AI 生成语料训练。",
+  "interaction": "患者视角零门槛：问诊表单结构化引导（望闻问切逐步采集）；话术温和专业，禁止恐吓；输出分级：科普级/参考级/就医提示级，渐进披露。",
+  "compliance": "① 不替代执业医师诊断 ② 输出挂免责声明 ③ 诊疗类必须后台医生审核（互联网医院模式）④ 急重症不适用并明确提示 ⑤ 患者数据强脱敏。",
+  "quality": "医学事实准确率 ≥95%（专家抽检）；拒答率（非适应症）100%；幻觉率 0（无依据不出方）；辨证与权威案例匹配率 ≥90%；审核流转完整率 100%。",
+  "security": "患者健康数据最高等级保护（full_mask 默认）；诊断链路留痕可追溯；Key 哈希存储 90 天轮换；输出双重扫描（内容红线 + 医疗断言检测）。",
+  "operations": "KB 持续蒸馏（公开论文/权威教材/授权内容，trust ≥0.7）；版本 semver；反馈（误诊/不符）优先处理通道；季度专家复审。",
+  "business": "L3 按词元（输入 ¥2/输出 ¥8）；L1 数据买断 ¥20/百万 × 1.5；医疗场景客户需资质审核后开通；订阅含 2,000 万词元。",
+  "boundary": {
+    "capable": [
+      "中医知识检索",
+      "智能辨证（八纲/六经）",
+      "方剂/穴位/经方推荐",
+      "相似案例检索",
+      "问诊单结构化"
+    ],
+    "incapable": [
+      "不替代执业医师诊断",
+      "不提供处方用药指导",
+      "不输出治疗方案",
+      "急重症不适用"
+    ],
+    "requires": []
+  },
+  "industry": "适用：中医科普/健康管理/教学/科研辅助/家庭健康（经审核）；不适用：直接诊疗/急诊/处方流转；定制点：医院科室话术、专病知识包。",
+  "roadmap": "v1.1 专病知识包（失眠/脾胃/亚健康）；v1.2 四诊多模态（对接 vision-pack 舌面诊）；v1.3 循证引用链；v1.4 医生审核工作台开放。",
+  "neural-capability-pack": {
+    "definition": "神经网络主流能力图谱：12 维度（RAG/GraphRAG/Agentic Search/LoRA/QLoRA/SFT/DPO/Continual Learning/Multimodal/Voice/Agent RL/Function Calling/Multi-Agent）选型决策框架，基于 ICLR 2026/ICML 2026 论文前沿。",
+    "value": "解决训练方「不知道用什么技术」问题：从知识检索到多智能体协作，全覆盖行业前沿；决策树式选型，门槛值可验证；适合任何要训练智能体的技术团队。",
+    "contents": "L1: NEURAL-CAPABILITY-MAP.md（12 能力 × 6 维度）；L2: 与 training-pipeline-pack 联动；L3: /api/neural/capabilities（列表）、/api/neural/recommend（行业→能力推荐）。",
+    "usage": "使用三步：① 确定场景（知识/微调/多模态/编排）② 按决策树选型 ③ 记录训练卡；最佳实践：RAG 优先于微调，LoRA 优先于全参，DPO 优先于 RLHF。",
+    "training": "本包为方法论不是模型：训练方按选型结果执行（如选 N4 LoRA → rank 8-64 + 量化 4bit + VRAM ≤16GB）；评测按各能力门槛值验收。",
+    "interaction": "决策树可视化（分支选择式）：一个输入 → 自动推荐能力组合；选型结果可导出到训练卡。",
+    "compliance": "① 能力选型建议仅供参考 ② 最终以训练方实测验证为准 ③ 不绑定特定框架（中立）。",
+    "quality": "12 能力覆盖 ICLR/ICML/ACL 2026 前沿（年度审定）；门槛值可验证；决策树覆盖 4 大场景分支。",
+    "security": "不涉及模型训练（纯方法论）；选型不引入额外安全风险；下游训练方自负责安全。",
+    "operations": "年度审定（ICLR/ICML 后更新）；新范式论文 → 强信号 → 进化提案；社区反馈回流。",
+    "business": "图谱免费（引流）；深度选型咨询项目制；与 training-pipeline-pack 联动打包。",
+    "boundary": "能：12 能力选型建议/决策框架/门槛引用/行业适配；不能：不提供算力/不训练模型/不承诺效果/不绑定框架；客户自备：自行选型决策与实测验证。",
+    "industry": "适用：全部行业（通用方法论）；定制点：行业专属能力组合（行业知识库 neuralCapabilities 字段）。",
+    "roadmap": "v1.1 纯 RLHF  revived（新时代方案）；v1.2 MoE 专家路由选型；v1.3 World Model 世界模型；v1.4 跨能力组合效果基准。"
+  }
+}

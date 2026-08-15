@@ -1,0 +1,59 @@
+{
+  "schema": "knowledge-card/v1",
+  "generatedAt": "2026-08-10T14:20:44.983Z",
+  "identity": {
+    "packId": "vision-diagnosis-pack",
+    "name": "AI 视觉诊疗能力包",
+    "domain": "vision",
+    "version": "1.0.0",
+    "maturity": 3,
+    "source": [
+      "ai-vision-toolkit",
+      "video-ai-surveillance",
+      "lowaltitude-platform"
+    ]
+  },
+  "definition": "AI 视觉诊疗公共能力：面/舌/眼/手四诊 ONNX 模型（74 个）+ 特征→KB 辨证匹配管线（30ms）+ 离线兜底，供视觉诊疗类智能体调用。",
+  "value": "解决「摄像头采集 → 特征识别 → KB 辨证」全链路问题：无需自建视觉模型，拍照即出结构化特征并联动知识库；适合中医面诊、健康管理、教学演示。",
+  "contents": "L1: 74 个 ONNX 模型（面/舌/眼/手 + 通用视觉）；L3: /api/vision/face、/api/vision/tongue、/api/vision/eye、/api/vision/palm、/api/camera/upload（含 kb_matches 特征匹配）。",
+  "usage": "接入三步：① 前端 getUserMedia 拍照 ② POST /api/camera/upload ③ 响应含识别特征 + KB 匹配结果；最佳实践：光线/角度不足时明确提示重拍（禁止静默失败）；离线时自动降级 PIL 几何启发式。",
+  "training": "引用本包训练：需标注数据集（专家标注舌色/苔色/面色分级）；评测集含光线/遮挡/设备差异对抗样本 ≥20%；门槛：特征识别准确率 ≥90%（标准光照）、KB 匹配 P95 <1.5s。",
+  "interaction": "拍照引导傻瓜式：取景框 + 距离提示 + 自动对焦检测；识别结果秒回（实时 KB 联动）；每次拍照可追溯（照片归档 + 结果回查）；设备异常给出明确修复指引。",
+  "compliance": "① 视觉输出不构成医学诊断（挂免责）② 人脸/舌像生物特征匿名化处理 ③ 医疗用途需合规审查 ④ 照片存储限时 + 用户可删除。",
+  "quality": "识别 P95 <1.5s（KB ≥0.7 直答优先）；KB 匹配率 ≥85%；离线兜底可用率 100%（不白屏）；特征输出结构化（可被 KB 命中）。",
+  "security": "生物特征不存明文（特征向量化 + 匿名化）；照片默认 24h 自动清理；上传接口限流防滥用；Key 哈希存储。",
+  "operations": "模型版本管理（ONNX 版本号）；识别反馈（对/错）回流 → 增补训练样本 → 月度模型迭代；四诊模型健康度看板。",
+  "business": "L3 按词元 + 次计费（识别调用 ¥0.5/次 或词元制）；L1 模型买断（含授权部署）；订阅含调用配额。",
+  "boundary": {
+    "capable": [
+      "面/舌/眼/手 四诊特征识别",
+      "特征→KB 辨证匹配（30ms）",
+      "拍照可追溯（照片归档）",
+      "离线兜底（PIL 几何启发式）"
+    ],
+    "incapable": [
+      "不构成医学诊断",
+      "光线极差/遮挡严重时准确率下降",
+      "不保存人脸生物特征明文"
+    ],
+    "requires": []
+  },
+  "industry": "适用：中医健康管理/教学/远程问诊辅助/家庭健康；不适用：临床确诊/司法鉴定；定制点：肤色/年龄分层校准、专病视觉模型。",
+  "roadmap": "v1.1 肤色/光照自适应校准；v1.2 视频流实时识别（非单帧）；v1.3 舌象时序对比；v1.4 与 tcm-pack 辨证引擎深度集成。",
+  "neural-capability-pack": {
+    "definition": "神经网络主流能力图谱：12 维度（RAG/GraphRAG/Agentic Search/LoRA/QLoRA/SFT/DPO/Continual Learning/Multimodal/Voice/Agent RL/Function Calling/Multi-Agent）选型决策框架，基于 ICLR 2026/ICML 2026 论文前沿。",
+    "value": "解决训练方「不知道用什么技术」问题：从知识检索到多智能体协作，全覆盖行业前沿；决策树式选型，门槛值可验证；适合任何要训练智能体的技术团队。",
+    "contents": "L1: NEURAL-CAPABILITY-MAP.md（12 能力 × 6 维度）；L2: 与 training-pipeline-pack 联动；L3: /api/neural/capabilities（列表）、/api/neural/recommend（行业→能力推荐）。",
+    "usage": "使用三步：① 确定场景（知识/微调/多模态/编排）② 按决策树选型 ③ 记录训练卡；最佳实践：RAG 优先于微调，LoRA 优先于全参，DPO 优先于 RLHF。",
+    "training": "本包为方法论不是模型：训练方按选型结果执行（如选 N4 LoRA → rank 8-64 + 量化 4bit + VRAM ≤16GB）；评测按各能力门槛值验收。",
+    "interaction": "决策树可视化（分支选择式）：一个输入 → 自动推荐能力组合；选型结果可导出到训练卡。",
+    "compliance": "① 能力选型建议仅供参考 ② 最终以训练方实测验证为准 ③ 不绑定特定框架（中立）。",
+    "quality": "12 能力覆盖 ICLR/ICML/ACL 2026 前沿（年度审定）；门槛值可验证；决策树覆盖 4 大场景分支。",
+    "security": "不涉及模型训练（纯方法论）；选型不引入额外安全风险；下游训练方自负责安全。",
+    "operations": "年度审定（ICLR/ICML 后更新）；新范式论文 → 强信号 → 进化提案；社区反馈回流。",
+    "business": "图谱免费（引流）；深度选型咨询项目制；与 training-pipeline-pack 联动打包。",
+    "boundary": "能：12 能力选型建议/决策框架/门槛引用/行业适配；不能：不提供算力/不训练模型/不承诺效果/不绑定框架；客户自备：自行选型决策与实测验证。",
+    "industry": "适用：全部行业（通用方法论）；定制点：行业专属能力组合（行业知识库 neuralCapabilities 字段）。",
+    "roadmap": "v1.1 纯 RLHF  revived（新时代方案）；v1.2 MoE 专家路由选型；v1.3 World Model 世界模型；v1.4 跨能力组合效果基准。"
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-08-11",
+  "scenarios": [
+    {
+      "id": "demo-01-mental-health",
+      "title": "心理咨询陪伴智能体",
+      "industry": "心理咨询",
+      "userInput": "训练一个心理咨询陪伴智能体，用于大学生情感倾诉与压力疏导",
+      "scenarios": [
+        "学生倾诉失恋情绪，AI 共情回应 + 不评判",
+        "识别高自伤风险立即转介校心理中心 + 24h 热线",
+        "提供 CBT 基础技巧（认知重构 / 情绪记录）"
+      ],
+      "neuralCapabilities": ["N1", "N5", "N6", "N9"],
+      "neuralLabels": ["RAG 向量检索", "SFT 指令微调", "DPO 偏好对齐", "语音交互"],
+      "compliance": [
+        "必须拒答：药物建议 / 诊断标签 / 治疗方案",
+        "高自伤风险必须立即转介（不能继续对话安抚）",
+        "对话数据最高隐私等级（脱敏存储 + 30 天销毁）"
+      ],
+      "dataScale": { "scenarios": 500, "knowledgeEntries": 300, "estimatedTokens": 640000 },
+      "estimatedCost": { "training": 12800, "monthly": 800, "currency": "CNY" },
+      "tags": ["心理健康", "高合规", "教育场景"],
+      "demoApiCall": "curl -X POST https://sgmt-taojing.github.io/agent-training-standards/api/engine/analyze -H 'Content-Type: application/json' -d '{\"query\":\"训练一个心理咨询陪伴智能体\"}'"
+    },
+    {
+      "id": "demo-02-medical-tcm",
+      "title": "中医体质辨识智能体",
+      "industry": "中医诊疗",
+      "userInput": "训练一个中医体质辨识智能体，配合摄像头做舌诊面诊辅助",
+      "scenarios": [
+        "用户上传舌照，AI 辨识舌色/苔色/形态，给出体质类型（9 种）",
+        "提供饮食/起居/运动建议（不替代医生诊断）",
+        "可对接体质食疗方剂库"
+      ],
+      "neuralCapabilities": ["N1", "N5", "N8"],
+      "neuralLabels": ["RAG 向量检索", "SFT 指令微调", "多模态融合（VLM）"],
+      "compliance": [
+        "必须前置免责：「本建议不替代医师诊断」",
+        "禁忌人群（孕妇/儿童/慢病）必须特别提示",
+        "所有方剂必须附「请遵医嘱」标签"
+      ],
+      "dataScale": { "scenarios": 800, "knowledgeEntries": 500, "estimatedTokens": 1040000 },
+      "estimatedCost": { "training": 20800, "monthly": 1200, "currency": "CNY" },
+      "tags": ["中医", "多模态", "摄像头"],
+      "demoApiCall": "curl -X POST https://sgmt-taojing.github.io/agent-training-standards/api/engine/analyze -H 'Content-Type: application/json' -d '{\"query\":\"训练一个中医体质辨识智能体，配合摄像头做舌诊面诊\"}'"
+    },
+    {
+      "id": "demo-03-finance-advisor",
+      "title": "个人理财顾问智能体",
+      "industry": "金融投资",
+      "userInput": "训练一个个人理财顾问智能体，给工薪族做资产配置建议",
+      "scenarios": [
+        "根据收入/支出/风险偏好给出资产配置（保守/平衡/激进）",
+        "解读基金/股票基本面（基于公开信息）",
+        "每日财经播报 + 个性化提醒"
+      ],
+      "neuralCapabilities": ["N1", "N2", "N6"],
+      "neuralLabels": ["RAG 向量检索", "GraphRAG 图谱检索", "DPO 偏好对齐"],
+      "compliance": [
+        "禁止承诺收益（必须显示风险提示）",
+        "禁止推荐具体股票（只做资产类别建议）",
+        "必须持有金融许可证提示（合规声明）"
+      ],
+      "dataScale": { "scenarios": 600, "knowledgeEntries": 400, "estimatedTokens": 800000 },
+      "estimatedCost": { "training": 16000, "monthly": 1000, "currency": "CNY" },
+      "tags": ["金融", "高合规", "数据敏感"],
+      "demoApiCall": "curl -X POST https://sgmt-taojing.github.io/agent-training-standards/api/engine/analyze -H 'Content-Type: application/json' -d '{\"query\":\"训练一个个人理财顾问智能体\"}'"
+    },
+    {
+      "id": "demo-04-education-tutor",
+      "title": "K12 数学家教智能体",
+      "industry": "教育辅导",
+      "userInput": "训练一个 K12 数学家教智能体，针对初中函数与几何",
+      "scenarios": [
+        "学生拍照上传题目，AI 拆解步骤讲解（不直接给答案）",
+        "根据错题推荐同类练习",
+        "家长端学习报告（每日时长/薄弱点）"
+      ],
+      "neuralCapabilities": ["N1", "N8", "N11"],
+      "neuralLabels": ["RAG 向量检索", "多模态融合", "Function Calling"],
+      "compliance": [
+        "禁止直接给作业答案（必须引导思考）",
+        "未成年人内容分级",
+        "家长知情同意（数据收集需家长确认）"
+      ],
+      "dataScale": { "scenarios": 1000, "knowledgeEntries": 600, "estimatedTokens": 1280000 },
+      "estimatedCost": { "training": 25600, "monthly": 1500, "currency": "CNY" },
+      "tags": ["教育", "多模态", "未成年"],
+      "demoApiCall": "curl -X POST https://sgmt-taojing.github.io/agent-training-standards/api/engine/analyze -H 'Content-Type: application/json' -d '{\"query\":\"训练一个 K12 数学家教智能体\"}'"
+    },
+    {
+      "id": "demo-05-customer-service",
+      "title": "电商客服智能体",
+      "industry": "电商客服",
+      "userInput": "训练一个 3C 电商客服智能体，处理退换货与参数咨询",
+      "scenarios": [
+        "用户咨询产品参数，AI 查知识库给准确参数",
+        "退换货流程引导（7 天无理由 / 质量问题）",
+        "识别情绪激烈用户升级人工"
+      ],
+      "neuralCapabilities": ["N1", "N6", "N11"],
+      "neuralLabels": ["RAG 向量检索", "DPO 偏好对齐", "Function Calling"],
+      "compliance": [
+        "禁止承诺超范围权益",
+        "价格/促销信息必须基于实时数据",
+        "差评升级机制（情绪检测 → 人工）"
+      ],
+      "dataScale": { "scenarios": 400, "knowledgeEntries": 300, "estimatedTokens": 560000 },
+      "estimatedCost": { "training": 11200, "monthly": 600, "currency": "CNY" },
+      "tags": ["电商", "客服", "高并发"],
+      "demoApiCall": "curl -X POST https://sgmt-taojing.github.io/agent-training-standards/api/engine/analyze -H 'Content-Type: application/json' -d '{\"query\":\"训练一个电商客服智能体\"}'"
+    }
+  ]
+}
